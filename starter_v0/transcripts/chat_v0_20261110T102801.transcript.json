@@ -1,0 +1,17 @@
+{
+  "session_id": "chat_v0_20261110T102801",
+  "started_at": "2026-11-10T10:28:01",
+  "version": "v0",
+  "provider": "openrouter",
+  "model": "openai/gpt-4o-mini",
+  "turns": [
+    {
+      "turn": 1,
+      "user": "hello",
+      "assistant": "Hello! How can I assist you today?",
+      "tool_events": [],
+      "status": "answered"
+    }
+  ],
+  "updated_at": "2026-11-10T10:28:36"
+}
