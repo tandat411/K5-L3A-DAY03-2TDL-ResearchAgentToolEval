@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Research Agent Studio — Debate Poster (Team 2TDL)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f4f2ed;
+      --surface: #faf9f5;
+      --surface-2: #edeae2;
+      --border: #dfdbd0;
+      --text: #282b28;
+      --muted: #5f645e;
+      --primary: #486354;
+      --primary-soft: #e4ede8;
+      --accent: #b8654e;
+      --accent-soft: #f4e6e1;
+      --pass-bg: #e3eee7;
+      --pass-text: #2b573e;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 28px 24px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Nunito Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.5;
+    }
+
+    code {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 12.5px;
+      background: var(--surface-2);
+      padding: 2px 6px;
+      border-radius: 5px;
+      color: var(--primary);
+    }
+
+    .poster {
+      max-width: 1120px;
+      margin: 0 auto;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    .header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .title-group h1 {
+      margin: 0 0 6px;
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .title-group p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14.5px;
+      max-width: 680px;
+    }
+
+    .kpis {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .kpi {
+      background: var(--pass-bg);
+      color: var(--pass-text);
+      padding: 8px 14px;
+      border-radius: 10px;
+      text-align: center;
+      min-width: 118px;
+    }
+
+    .kpi strong {
+      display: block;
+      font-size: 20px;
+      line-height: 1.2;
+    }
+
+    .kpi span {
+      font-size: 11.5px;
+      font-weight: 600;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1.35fr 1fr;
+      gap: 20px;
+    }
+
+    h2 {
+      margin: 0 0 10px;
+      font-size: 15px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--primary);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13.5px;
+      background: var(--bg);
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    th, td {
+      padding: 8px 11px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: var(--surface-2);
+      font-size: 11.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    tr:last-child td { border-bottom: none; }
+
+    .new-badge {
+      background: var(--accent-soft);
+      color: var(--accent);
+      padding: 2px 7px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin-bottom: 14px;
+    }
+
+    .prompt-list {
+      margin: 0;
+      padding-left: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 13.5px;
+    }
+
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12.5px;
+      color: var(--muted);
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+    }
+
+    @media (max-width: 860px) {
+      .grid-2 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="poster">
+    <header class="header">
+      <div class="title-group">
+        <h1>Research Agent Studio · Team 2TDL</h1>
+        <p>Trợ lý nghiên cứu đa nguồn chạy bằng API thật: tìm tin thời sự (Tavily), theo dõi X/Twitter, đọc URL (Firecrawl), tra cứu bài báo arXiv & PDF, tìm mã nguồn mở GitHub (<code>github_repos</code>), kiểm tra quy định nội bộ (<code>policy</code>) và đăng kênh Telegram có xác nhận an toàn.</p>
+      </div>
+      <div class="kpis">
+        <div class="kpi"><strong>0.65 → 1.00</strong><span>Base Eval (20/20)</span></div>
+        <div class="kpi"><strong>10 / 10</strong><span>Group Eval (100%)</span></div>
+        <div class="kpi"><strong>87 / 87</strong><span>Pytest (0 skipped)</span></div>
+      </div>
+    </header>
+
+    <div class="grid-2">
+      <div>
+        <h2>A2. Hệ sinh thái 11 Tools của Agent</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Tool</th>
+              <th>Chức năng chính</th>
+              <th>Loại</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><code>clarify</code></td><td>Hỏi lại khi thiếu handle/URL hoặc xin xác nhận <code>yes_no</code> trước khi đăng Telegram</td><td>Core</td></tr>
+            <tr><td><code>timeline</code></td><td>Lấy tweet mới nhất từ 1 tài khoản (map <code>Sam Altman→sama</code>, <code>Elon Musk→elonmusk</code>, <code>Karpathy→karpathy</code>)</td><td>Core</td></tr>
+            <tr><td><code>social_search</code></td><td>Tìm thảo luận X/Twitter theo chủ đề (<code>Latest</code> / <code>Top</code>)</td><td>Core</td></tr>
+            <tr><td><code>lookup</code></td><td>Tìm tin tức thời sự (<code>topic="news"</code>) hoặc web chung qua Tavily kèm <code>timeframe</code></td><td>Core</td></tr>
+            <tr><td><code>fetch</code></td><td>Đọc và trích xuất nội dung markdown sạch từ URL qua Firecrawl</td><td>Core</td></tr>
+            <tr><td><code>format</code></td><td>Tổng hợp các mục đã thu thập thành bản tin markdown (<code>brief</code>, <code>sections</code>, <code>thread</code>...)</td><td>Core</td></tr>
+            <tr><td><code>send</code></td><td>Đăng bản tin lên kênh Telegram (chỉ gửi khi <code>confirmed=true</code>)</td><td>Bonus</td></tr>
+            <tr><td><code>policy</code></td><td>Tra cứu quy định nội bộ công ty (tách dòng prompt injection sang <code>untrusted_text</code>)</td><td>Bonus</td></tr>
+            <tr><td><code>papers</code></td><td>Tìm kiếm bài báo khoa học / preprint trên arXiv</td><td>Bonus</td></tr>
+            <tr><td><code>paper_text</code></td><td>Tải PDF arXiv theo ID và trích xuất văn bản bằng <code>pypdf</code></td><td>Bonus</td></tr>
+            <tr><td><code>github_repos</code></td><td><strong>Tìm repository mã nguồn mở trên GitHub theo từ khóa (<code>stars</code>, <code>forks</code>, <code>updated</code>)</strong></td><td><span class="new-badge">MỚI</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div>
+        <h2>A3. 5 Câu hỏi mẫu để Team khác mở thử ngay</h2>
+        <div class="card">
+          <ol class="prompt-list">
+            <li><strong>Kết hợp đa nguồn (Web + Twitter):</strong><br/><em>"Tìm trên web tin AI hôm nay và tìm thêm tweet về AI."</em></li>
+            <li><strong>Thử Tool mới (<code>github_repos</code> + <code>papers</code>):</strong><br/><em>"Tìm paper arXiv về RAG evaluation và tìm luôn 5 repo GitHub nhiều sao nhất về RAG evaluation."</em></li>
+            <li><strong>Kiểm tra hỏi lại khi thiếu thông tin (<code>clarify</code>):</strong><br/><em>"Tóm tắt 5 tweet mới nhất giúp mình"</em> → lượt sau trả lời: <em>"Của Andrej Karpathy nhé"</em>.</li>
+            <li><strong>Kiểm tra ranh giới an toàn trước khi đăng (<code>send</code>):</strong><br/><em>"Đăng bản tin AI hôm nay lên Telegram giúp mình"</em> → Agent tự động hỏi xác nhận <code>yes_no</code>.</li>
+            <li><strong>Kiểm tra Policy nội bộ &amp; Out-of-scope:</strong><br/><em>"Theo policy công ty, có được đưa API key vào prompt không?"</em> hoặc <em>"Giải nguyên hàm của x^2"</em>.</li>
+          </ol>
+        </div>
+
+        <h2>Hành trình tối ưu hoá (v0 → v3)</h2>
+        <div class="card" style="margin-bottom:0;">
+          <table>
+            <thead>
+              <tr><th>Ver</th><th>Artifact sửa</th><th>Điểm</th><th>Cải tiến chính</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>v0</code></td><td>Baseline</td><td><strong>0.65</strong></td><td>Fail 7 cases do prompt ép đoán mò &amp; tự gửi</td></tr>
+              <tr><td><code>v1</code></td><td><code>system_prompt.md</code></td><td><strong>0.85</strong></td><td>Thêm ranh giới <code>clarify</code>, xác nhận <code>send</code> &amp; <code>out_of_scope</code></td></tr>
+              <tr><td><code>v2</code></td><td><code>tools.yaml</code></td><td><strong>1.00</strong></td><td>Viết lại <code>description</code> + quy ước args (<code>topic=news</code>, handle)</td></tr>
+              <tr><td><code>v3</code></td><td><code>system_prompt.md</code></td><td><strong>1.00</strong></td><td>Bảng routing toàn diện + <code>github_repos</code> (10/10 group eval)</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <span><strong>Web Studio UI:</strong> <code>http://localhost:8501</code> (<code>python app.py --port 8501</code>)</span>
+      <span><strong>Artifact Version:</strong> <code>v3+p9a8fd4b44204+td8c706b335fa</code></span>
+    </footer>
+  </div>
+</body>
+</html>
+
