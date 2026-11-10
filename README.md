@@ -175,6 +175,18 @@ python scripts/preflight_provider.py --provider openrouter
 
 If preflight fails, fix provider key, dependency, or network before running eval.
 
+## Run the Streamlit UI
+
+From the repository root, activate the starter environment and launch the chat UI:
+
+```powershell
+cd starter_v0
+.\.venv\Scripts\Activate.ps1
+streamlit run app.py
+```
+
+The UI uses the provider, prompt, and tools configured in `starter_v0/artifacts/`. It saves each chat to `starter_v0/transcripts/` and provides a download button for the transcript. Telegram sends are held for explicit confirmation in the UI.
+
 ## Step 1 — Run Baseline
 
 Run the fixed base eval as `v0`:

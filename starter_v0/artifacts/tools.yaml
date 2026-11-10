@@ -16,14 +16,14 @@
 tools:
   # ---------------- Core tools ----------------
   - name: clarify
-    description: "Gửi một câu hỏi cho người dùng."
+    description: "Hỏi người dùng khi thiếu thông tin bắt buộc. Luôn truyền response_type: dùng text cho câu hỏi mở, yes_no để xin xác nhận."
     parameters:
       type: object
       properties:
-        question: {type: string, default: "", description: "Câu hỏi"}
-        response_type: {type: string, enum: [text, yes_no, choice], default: "text", description: "Kiểu trả lời"}
-        options: {type: array, default: [], items: {type: string}, description: "Các lựa chọn"}
-      required: [question]
+        question: {type: string, default: "", description: "Câu hỏi ngắn, cụ thể"}
+        response_type: {type: string, enum: [text, yes_no, choice], default: "text", description: "Bắt buộc: text cho câu hỏi mở; yes_no để xin xác nhận; choice khi đưa các lựa chọn"}
+        options: {type: array, default: [], items: {type: string}, description: "Các lựa chọn, dùng khi response_type là choice"}
+      required: [question, response_type]
 
   - name: timeline
     description: "Lấy các bài đăng gần đây."
@@ -45,13 +45,13 @@ tools:
       required: [query]
 
   - name: lookup
-    description: "Tra cứu thông tin trên internet."
+    description: "Tìm thông tin trên web. Dùng cho câu hỏi cần nguồn web; với tin mới nhất hoặc tin tức thời sự, luôn đặt topic=news và chọn timeframe phù hợp. Không dùng để đọc nội dung một URL cụ thể (dùng fetch) hoặc tìm bài đăng mạng xã hội (dùng social_search)."
     parameters:
       type: object
       properties:
         query: {type: string, default: "", description: "Truy vấn"}
-        topic: {type: string, enum: [general, news], default: "general", description: "Phân loại"}
-        timeframe: {type: string, enum: [day, week, month, year], default: "week", description: "Khoảng thời gian"}
+        topic: {type: string, enum: [general, news], default: "general", description: "Dùng news cho tin tức, sự kiện mới hoặc tin hôm nay; general cho tra cứu thông tin không mang tính thời sự"}
+        timeframe: {type: string, enum: [day, week, month, year], default: "week", description: "Dùng day cho hôm nay/24 giờ qua, week cho tuần này, month cho tháng này, year cho năm này"}
         max_results: {type: integer, default: 5, description: "Số kết quả"}
       required: [query]
 
@@ -86,7 +86,7 @@ tools:
 
   # ---------------- Bonus tools ----------------
   - name: send
-    description: "Gửi một đoạn văn bản đi."
+    description: "Gửi nội dung lên Telegram. Chỉ gọi sau khi người dùng đã xác nhận rõ ràng nội dung gửi; nếu chưa xác nhận, hỏi bằng clarify với response_type=yes_no. Sau khi người dùng đồng ý, gọi send với confirmed=true."
     parameters:
       type: object
       properties:
@@ -123,3 +123,21 @@ tools:
         max_pages: {type: integer, default: 5, description: "Số trang"}
         max_chars: {type: integer, default: 8000, description: "Số ký tự"}
       required: [arxiv_url]
+
+  - name: dedupe_sources
+    description: "Loại các kết quả nghiên cứu trùng URL, giữ lần xuất hiện đầu tiên. Chỉ dùng khi đã có danh sách item và người dùng muốn gộp/xóa nguồn trùng; không tìm kiếm web hay tải nội dung. URL được so sánh không phân biệt chữ hoa/thường và bỏ dấu / ở cuối."
+    parameters:
+      type: object
+      properties:
+        items:
+          type: array
+          default: []
+          description: "Các kết quả đã thu thập cần khử trùng lặp"
+          items:
+            type: object
+            properties:
+              title: {type: string}
+              url: {type: string}
+              source: {type: string}
+              summary: {type: string}
+      required: [items]

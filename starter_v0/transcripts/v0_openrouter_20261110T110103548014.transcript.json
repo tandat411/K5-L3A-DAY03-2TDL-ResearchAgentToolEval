@@ -1,0 +1,28 @@
+{
+  "transcript_id": "v0_openrouter_20261110T110103548014",
+  "version": "v0",
+  "artifact_version": "v0+peb1c8179815b+t5b22a2476d41",
+  "prompt_hash": "eb1c8179815bd79d34de7d326420bb99b3072e6e8ae96464c02d4411f905fc68",
+  "tools_hash": "5b22a2476d41b989d5dc1e54f24ce7890e781909deb2f7afafb856ab53a6d7c0",
+  "provider": "openrouter",
+  "model": "openai/gpt-4o-mini",
+  "system_prompt": "artifacts/system_prompt.md",
+  "tools": "artifacts/tools.yaml",
+  "history_window": 5,
+  "max_tool_rounds": 4,
+  "created_at": "2026-11-10T11:01:03",
+  "updated_at": "2026-11-10T11:01:06",
+  "turns": [
+    {
+      "turn_index": 1,
+      "started_at": "2026-11-10T11:01:03",
+      "user": "Chào bạn",
+      "status": "provider_error",
+      "assistant_text": "Không thể hoàn tất yêu cầu. Kiểm tra cấu hình provider rồi thử lại.",
+      "rounds": [],
+      "tool_events": [],
+      "error": "APIConnectionError: Connection error.",
+      "ended_at": "2026-11-10T11:01:06"
+    }
+  ]
+}

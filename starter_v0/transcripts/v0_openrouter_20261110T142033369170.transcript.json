@@ -1,0 +1,190 @@
+{
+  "transcript_id": "v0_openrouter_20261110T142033369170",
+  "version": "v0",
+  "artifact_version": "v0+p11f84e927d1b+t590da882db80",
+  "prompt_hash": "11f84e927d1b249318d54ec70c156de579770587d0b3621741fcb357757130ab",
+  "tools_hash": "590da882db80463a85be9110bc0c335c991c166f470b5ff6ae30cee0a4c9f989",
+  "provider": "openrouter",
+  "model": "openai/gpt-4o-mini",
+  "system_prompt": "artifacts/system_prompt.md",
+  "tools": "artifacts/tools.yaml",
+  "history_window": 5,
+  "max_tool_rounds": 4,
+  "created_at": "2026-11-10T14:20:33",
+  "updated_at": "2026-11-10T14:21:33",
+  "turns": [
+    {
+      "turn_index": 1,
+      "started_at": "2026-11-10T14:20:33",
+      "user": "hãy tóm tắt giúp tôi bài viết này",
+      "status": "answered",
+      "assistant_text": "Vui lòng cung cấp địa chỉ URL của bài viết mà bạn muốn tóm tắt.",
+      "rounds": [
+        {
+          "round": 1,
+          "assistant_text": "Vui lòng cung cấp địa chỉ URL của bài viết mà bạn muốn tóm tắt.",
+          "tool_calls": [],
+          "tool_results": []
+        }
+      ],
+      "tool_events": [],
+      "ended_at": "2026-11-10T14:20:37"
+    },
+    {
+      "turn_index": 2,
+      "started_at": "2026-11-10T14:21:10",
+      "user": "thôi hãy cho tôi biết thời tiết hôm nay",
+      "status": "answered",
+      "assistant_text": "Bạn có thể cho tôi biết vị trí cụ thể mà bạn muốn kiểm tra thời tiết không?",
+      "rounds": [
+        {
+          "round": 1,
+          "assistant_text": "Bạn có thể cho tôi biết vị trí cụ thể mà bạn muốn kiểm tra thời tiết không?",
+          "tool_calls": [],
+          "tool_results": []
+        }
+      ],
+      "tool_events": [],
+      "ended_at": "2026-11-10T14:21:11"
+    },
+    {
+      "turn_index": 3,
+      "started_at": "2026-11-10T14:21:24",
+      "user": "hà nội",
+      "status": "answered",
+      "assistant_text": "Thời tiết Hà Nội hôm nay có một số điểm nổi bật như sau:\n\n1. **Nhiệt độ**: Sáng sớm, nhiệt độ vẫn ở mức thấp, khoảng 15-16 độ C. Đến đầu giờ chiều, nhiệt độ có thể tăng lên mức cao nhất khoảng 23 độ C, nhưng sẽ giảm dần vào buổi tối.\n\n2. **Trời mưa**: Mưa đã giảm ở nhiều khu vực, nhưng vẫn có khả năng có mưa nhẹ. Trời nhiều mây và có những khoảng nắng nhẹ trong ngày.\n\n3. **Gió**: Gió Đông Bắc với tốc độ khoảng 3-4 cấp, khiến không khí trở nên lạnh hơn.\n\n4. **Độ ẩm**: Độ ẩm không khí cao, khoảng 91%.\n\n5. **Dự báo**: Tối và đêm nay, Hà Nội sẽ có nhiều mây, ít mưa và trời vẫn khá rét.\n\nNguồn tham khảo: [Hà Nội Online](https://www.facebook.com/www.hanoionline.vn/posts/%EF%B8%8F-h%C3%A0-n%E1%BB%99i-m%C6%B0a-gi%E1%BA%A3m-tr%E1%BB%9Di-v%E1%BA%ABn-r%C3%A9tth%E1%BB%9Di-ti%E1%BA%BFt-h%C3%A0-n%E1%BB%99i-h%C3%B4m-nay-v%E1%BA%ABn-l%E1%BA%A1nh-nh%C6%B0ng-m%C6%B0a-%C4%91%C3%A3-gi%E1%BA%A3/1462234039402877) và [Lao Động](https://laodong.vn/du-lich/cong-dong/du-bao-thoi-tiet-ha-noi-10-ngay-toi-ret-nhat-16-do-c-1797489.html).",
+      "rounds": [
+        {
+          "round": 1,
+          "assistant_text": null,
+          "tool_calls": [
+            {
+              "name": "lookup",
+              "args": {
+                "query": "Hà Nội thời tiết hôm nay",
+                "topic": "general",
+                "timeframe": "day",
+                "max_results": 5
+              }
+            }
+          ],
+          "tool_results": [
+            {
+              "tool": "lookup",
+              "args": {
+                "query": "Hà Nội thời tiết hôm nay",
+                "topic": "general",
+                "timeframe": "day",
+                "max_results": 5
+              },
+              "result": {
+                "tool": "web_search",
+                "query": "Hà Nội thời tiết hôm nay",
+                "topic": "general",
+                "timeframe": "day",
+                "items": [
+                  {
+                    "title": "17K views · 363 reactions | 🌦️ Hà Nội mưa giảm, trời vẫn rét\n\nThời tiết Hà Nội hôm nay vẫn lạnh nhưng mưa đã giảm ở nhiều khu vực. Ban ngày nhiều mây và đan xen những khoảng nắng nhẹ. Sáng sớm, nhiệt độ vẫn ở mức thấp kết hợp gió Đông bắc cấp 3-4, nên trời vẫn khá lạnh. Sang đầu giờ chiều, khi những khoảng nắng xuất hiện nhiều hơn sẽ đẩy nền nhiệt lên mức 23 độ. Đây cũng là mức nhiệt cao nhất trong ngày và duy trì đến chiều muộn rồi giảm dần. Tối và đêm nay, Hà Nội phổ biến nhiều mây, ít mưa, trời vẫn khá rét.\n\n#CoquanBaovaPhatthanhTruyenhinhHaNoi #tintuc #hanoionline #tinhanoi #thoitiet #thoitiethomnay | Hà Nội Online",
+                    "url": "https://www.facebook.com/www.hanoionline.vn/posts/%EF%B8%8F-h%C3%A0-n%E1%BB%99i-m%C6%B0a-gi%E1%BA%A3m-tr%E1%BB%9Di-v%E1%BA%ABn-r%C3%A9tth%E1%BB%9Di-ti%E1%BA%BFt-h%C3%A0-n%E1%BB%99i-h%C3%B4m-nay-v%E1%BA%ABn-l%E1%BA%A1nh-nh%C6%B0ng-m%C6%B0a-%C4%91%C3%A3-gi%E1%BA%A3/1462234039402877",
+                    "source": "facebook.com",
+                    "summary": "🌦️ Hà Nội mưa giảm, trời vẫn rét Thời tiết Hà Nội hôm nay vẫn lạnh nhưng mưa đã giảm ở nhiều khu vực. Ban ngày nhiều mây và đan xen những khoảng nắng nhẹ. Sáng sớm, nhiệt độ vẫn ở mức thấp kết hợp gió Đông bắc cấp 3-4, nên trời vẫn khá lạnh. Sang đầu giờ chiều, khi những khoảng nắng xuất hiện nhiều hơn sẽ đẩy nền nhiệt lên mức 23 độ. Đây cũng là mức nhiệt cao nhất trong ngày và duy trì đến chiều muộn rồi giảm dần. Tối và đêm nay, Hà Nội phổ biến nhiều mây, ít mưa, trời vẫn khá rét. [...] trời vẫn khá rét. #CoquanBaovaPhatthanhTruyenhinhHaNoi #tintuc #hanoionline #tinhanoi #thoitiet #thoitiethomnay [...] [](",
+                    "score": 0.9049283
+                  },
+                  {
+                    "title": "Dự báo thời tiết Hà Nội 10 ngày tới rét nhất 16 độ C",
+                    "url": "https://laodong.vn/du-lich/cong-dong/du-bao-thoi-tiet-ha-noi-10-ngay-toi-ret-nhat-16-do-c-1797489.html",
+                    "source": "laodong.vn",
+                    "summary": "Theo tin thời tiết mới nhất từ Trung tâm Dự báo Khí tượng Thủy văn Quốc gia, không khí lạnh đã ảnh hưởng đến khu vực Tây Bắc Bộ, Bắc Trung Bộ và một số nơi ở Trung Trung Bộ.\n\nThời tiết Hà Nội hôm nay có mưa, nhiệt độ thấp nhất ở mức 15 - 16 độ C, độ ẩm 91%.\n\nTheo dự báo thời tiết 10 ngày tới của Trung tâm Dự báo khí tượng thủy văn quốc gia, Hà Nội có xu hướng tăng nhiệt từ ngày 10.11, mưa dông có khả năng xuất hiện trở lại vào ngày 12 - 13.11. [...] Từ ngày 14.11, thời tiết Hà Nội có xu hướng khô ráo hơn.\n\nNgày 14.11, trời có mây, không mưa, nhiệt độ dao động 20 - 28 độ C.\n\nNgày 15.11, nhiệt độ tiếp tục tăng, thấp nhất 23 độ C, cao nhất 29 độ C. Trời có mây, không mưa.\n\nTrong hai ngày 16 - 17.11, Hà Nội có mây, không mưa. Nhiệt độ thấp nhất phổ biến 23 - 24 độ C, cao nhất khoảng 30 độ C.\n\nĐến ngày 18 - 19.11, nhiệt độ giảm nhẹ, dao động 21 - 27 độ C. Thời tiết có mây, không mưa. [...] Cụ thể, ngày 10.11, Hà Nội nhiều mây, không mưa, nhiệt độ thấp nhất 17 độ C, cao nhất 23 độ C. Gió đông bắc tốc độ 3 m/s.\n\nNgày 11.11, thời tiết tiếp tục nhiều mây, không mưa. Nhiệt độ dao động 16 - 24 độ C, gió đông bắc tốc độ 1 m/s.\n\nĐến ngày 12.11, Hà Nội nhiều mây, có mưa dông. Nhiệt độ thấp nhất 16 độ C, cao nhất 23 độ C. Gió tây bắc tốc độ 3 m/s.\n\nNgày 13.11, khu vực Thủ đô tiếp tục nhiều mây, có mưa dông, nhiệt độ tăng lên 18 - 26 độ C.",
+                    "score": 0.8785752
+                  },
+                  {
+                    "title": "Thời tiết Hà Nội hôm nay - Dự báo thời tiết ngày mai và 7 ngày tới",
+                    "url": "https://baomoi.com/tien-ich-thoi-tiet-ha-noi.epi",
+                    "source": "baomoi.com",
+                    "summary": "### Dự báo thời tiết tối | 07/11/2026\n\n7333 liên quan\n\nTối và đêm nay, Hà Nội tiếp tục nhiều my, mưa rào và dông vẫn diễn ra ở nhiều khu vực, nhiệt độ giảm về mức 25 độ. Độ ẩm 86-95%.\n\n### Thời tiết hôm nay 8.11: Hà Nội cục bộ có nơi mưa to\n\n2152 liên quan\n\nTheo Trung tm Dự báo Khí tượng Thủy văn Quốc gia, ngày 8.11, Bắc Bộ có mưa rào và dông rải rác, cục bộ có nơi mưa to. Trung Bộ có mưa dông vài nơi. Riêng Nam Bộ có mưa rào và dông vài nơi, nhiệt độ cao nhất 34°C. [...] My rải rác\n\n15/11\n\n23° - 31°\n\nSáng nhiều my, chiều nắng ấm\n\nNguồn: weather.com\n\n## Chủ đề\n\n Tin bão mới nhất\n Tin không khí lạnh\n Tin áp thấp nhiệt đới\n\n## Tin tức thời tiết Hà Nộihôm nay\n\n### Dự báo thời tiết ngày 9/11: Hà Nội giảm nhiệt xuống 17 độ, mưa dông diện rộng\n\n4718 liên quan [...] Hà Nội\n\nHà NộiTP. Hồ Chí MinhĐà NẵngAn GiangBắc NinhCà MauCần ThơCao BằngĐắk LắkĐiện BiênĐồng NaiĐồng ThápGia LaiHà TĩnhHải PhòngHưng YênKhánh HòaLai ChuLm ĐồngLạng SơnLào CaiNghệ AnNinh BìnhPhú ThọQuảng NgãiQuảng NinhQuảng TrịSơn LaTy NinhThái NguyênThanh HóaThừa Thiên HuếTuyên QuangVĩnh Long\n\n09/11\n\n17° - 19°\n\nMưa nhẹ\n\n10/11\n\n16° - 22°\n\nSáng nhiều my, chiều nắng ấm\n\n11/11\n\n18° - 24°\n\nMy rải rác\n\n12/11\n\n18° - 23°\n\nNhiều my\n\n13/11\n\n20° - 25°\n\nMưa rào vào buổi sáng\n\n14/11\n\n22° - 28°\n\nMy rải rác",
+                    "score": 0.8773195
+                  },
+                  {
+                    "title": "Dự báo thời tiết Hà Nội 30 ngày tới - Thoitiet.vn",
+                    "url": "https://thoitiet.vn/ha-noi/30-ngay-toi",
+                    "source": "thoitiet.vn",
+                    "summary": "Thành phố của bạn:   Hà Nội   Thay đổi\n\nGiờ địa phương:  06:52 | 21/10/2026\n\n# Dự báo thời tiết Hà Nội 30 ngày tới\n\n## Hôm nay\n\n23.8°C   /  32.1°C\n\nMưa nhẹ  Mưa nhẹ\n\n2.02 km/giờ\n\n###### Ngày/Đêm\n\n32.3/ 25.4°\n\n###### Sáng/Tối\n\n25.2/ 27.8°\n\n###### Áp suất\n\n### 1015 mb\n\n###### Gió\n\n### 2.02 km/giờ\n\n###### Mặt trời mọc/lặn\n\n05:53  17:28\n\nMưa nhẹ\n\n  \n\n## T5 22/10\n\n23.8°C   /  30.9°C\n\nMưa nhẹ  Mưa nhẹ\n\n2.66 km/giờ\n\n###### Ngày/Đêm\n\n30.9/ 23.4°\n\n###### Sáng/Tối\n\n25.9/ 26.6°\n\n###### Áp suất\n\n### 1013 mb [...] ###### Ngày/Đêm\n\n27.3/ 23.8°\n\n###### Sáng/Tối\n\n23.5/ 23.2°\n\n###### Áp suất\n\n### 1017 mb\n\n###### Gió\n\n### 2.72 km/giờ\n\n###### Mặt trời mọc/lặn\n\n06:09  17:14\n\nMưa nhẹ\n\nHà Nội\n\nĐã cập nhật 24 phút trước\n\nMưa nhẹ 25.7°\n\nMưa nhẹ\n\nCảm giác như 26.9°.\n\n### Dự báo những ngày tới\n\nHôm nay Ngày mai 3 ngày 5 ngày\n\n7 ngày 10 ngày 15 ngày 30 ngày\n\n###### Mặt trời mọc/lặn\n\n05:53  17:28\n\n###### Độ ẩm\n\n###### Áp suất\n\n### 1016 mb\n\n###### Tầm nhìn\n\n### 10 km\n\n### 2.1 km/giờ\n\n###### Điểm ngưng\n\n### 24.2 °C",
+                    "score": 0.8446273
+                  },
+                  {
+                    "title": "Bản tin Thời tiết Hà Nội (10 - 11/11): Mưa lạnh mở rộng, Thủ đô rét 16 độ C",
+                    "url": "https://www.youtube.com/watch?v=ZRRnlwbAcLM",
+                    "source": "youtube.com",
+                    "summary": "### Transcript\n[0:11] Hiện nay khối không khí lạnh gây mưa đang mở rộng ảnh hưởng tại khu vực Bắc Bộ. Thủ đô Hà Nội trong 24 giờ tới tiếp tục giảm nhiệt sâu, cảm nhận rét rõ rệt, đặc biệt về đêm và sáng sớm.\n[0:24] Chi tiết thời tiết thủ đô Hà Nội ngày mùng 10 11 tháng 11. Nhiều mây có mưa vài nơi, gió đông bắc cấp ba cấp b trời\n[0:32] rét. Nhiệt độ thấp nhất về đêm từ 16 đến 18° C. Nhiệt độ cao nhất ban ngày từ 21 đến 23° C. Do ảnh hưởng không khí lạnh [...] ### Description\n1,729 views\nPosted: 2026-11-09\nHiện nay khối không khí lạnh gây mưa đang mở rộng ảnh hưởng tại khu vực Bắc Bộ. Thủ đô Hà Nội trong 24 giờ tới tiếp tục giảm nhiệt sâu, cảm nhận rét rõ rệt đặc biệt về đêm và sáng sớm. [...] # Bản tin Thời tiết Hà Nội (10 - 11/11): Mưa lạnh mở rộng, Thủ đô rét 16 độ C\n## Channel: Báo Tiền Phong News (verified)\n1.18M subscribers\n3 likes",
+                    "score": 0.78611463
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "round": 2,
+          "assistant_text": "Thời tiết Hà Nội hôm nay có một số điểm nổi bật như sau:\n\n1. **Nhiệt độ**: Sáng sớm, nhiệt độ vẫn ở mức thấp, khoảng 15-16 độ C. Đến đầu giờ chiều, nhiệt độ có thể tăng lên mức cao nhất khoảng 23 độ C, nhưng sẽ giảm dần vào buổi tối.\n\n2. **Trời mưa**: Mưa đã giảm ở nhiều khu vực, nhưng vẫn có khả năng có mưa nhẹ. Trời nhiều mây và có những khoảng nắng nhẹ trong ngày.\n\n3. **Gió**: Gió Đông Bắc với tốc độ khoảng 3-4 cấp, khiến không khí trở nên lạnh hơn.\n\n4. **Độ ẩm**: Độ ẩm không khí cao, khoảng 91%.\n\n5. **Dự báo**: Tối và đêm nay, Hà Nội sẽ có nhiều mây, ít mưa và trời vẫn khá rét.\n\nNguồn tham khảo: [Hà Nội Online](https://www.facebook.com/www.hanoionline.vn/posts/%EF%B8%8F-h%C3%A0-n%E1%BB%99i-m%C6%B0a-gi%E1%BA%A3m-tr%E1%BB%9Di-v%E1%BA%ABn-r%C3%A9tth%E1%BB%9Di-ti%E1%BA%BFt-h%C3%A0-n%E1%BB%99i-h%C3%B4m-nay-v%E1%BA%ABn-l%E1%BA%A1nh-nh%C6%B0ng-m%C6%B0a-%C4%91%C3%A3-gi%E1%BA%A3/1462234039402877) và [Lao Động](https://laodong.vn/du-lich/cong-dong/du-bao-thoi-tiet-ha-noi-10-ngay-toi-ret-nhat-16-do-c-1797489.html).",
+          "tool_calls": [],
+          "tool_results": []
+        }
+      ],
+      "tool_events": [
+        {
+          "tool": "lookup",
+          "args": {
+            "query": "Hà Nội thời tiết hôm nay",
+            "topic": "general",
+            "timeframe": "day",
+            "max_results": 5
+          },
+          "result": {
+            "tool": "web_search",
+            "query": "Hà Nội thời tiết hôm nay",
+            "topic": "general",
+            "timeframe": "day",
+            "items": [
+              {
+                "title": "17K views · 363 reactions | 🌦️ Hà Nội mưa giảm, trời vẫn rét\n\nThời tiết Hà Nội hôm nay vẫn lạnh nhưng mưa đã giảm ở nhiều khu vực. Ban ngày nhiều mây và đan xen những khoảng nắng nhẹ. Sáng sớm, nhiệt độ vẫn ở mức thấp kết hợp gió Đông bắc cấp 3-4, nên trời vẫn khá lạnh. Sang đầu giờ chiều, khi những khoảng nắng xuất hiện nhiều hơn sẽ đẩy nền nhiệt lên mức 23 độ. Đây cũng là mức nhiệt cao nhất trong ngày và duy trì đến chiều muộn rồi giảm dần. Tối và đêm nay, Hà Nội phổ biến nhiều mây, ít mưa, trời vẫn khá rét.\n\n#CoquanBaovaPhatthanhTruyenhinhHaNoi #tintuc #hanoionline #tinhanoi #thoitiet #thoitiethomnay | Hà Nội Online",
+                "url": "https://www.facebook.com/www.hanoionline.vn/posts/%EF%B8%8F-h%C3%A0-n%E1%BB%99i-m%C6%B0a-gi%E1%BA%A3m-tr%E1%BB%9Di-v%E1%BA%ABn-r%C3%A9tth%E1%BB%9Di-ti%E1%BA%BFt-h%C3%A0-n%E1%BB%99i-h%C3%B4m-nay-v%E1%BA%ABn-l%E1%BA%A1nh-nh%C6%B0ng-m%C6%B0a-%C4%91%C3%A3-gi%E1%BA%A3/1462234039402877",
+                "source": "facebook.com",
+                "summary": "🌦️ Hà Nội mưa giảm, trời vẫn rét Thời tiết Hà Nội hôm nay vẫn lạnh nhưng mưa đã giảm ở nhiều khu vực. Ban ngày nhiều mây và đan xen những khoảng nắng nhẹ. Sáng sớm, nhiệt độ vẫn ở mức thấp kết hợp gió Đông bắc cấp 3-4, nên trời vẫn khá lạnh. Sang đầu giờ chiều, khi những khoảng nắng xuất hiện nhiều hơn sẽ đẩy nền nhiệt lên mức 23 độ. Đây cũng là mức nhiệt cao nhất trong ngày và duy trì đến chiều muộn rồi giảm dần. Tối và đêm nay, Hà Nội phổ biến nhiều mây, ít mưa, trời vẫn khá rét. [...] trời vẫn khá rét. #CoquanBaovaPhatthanhTruyenhinhHaNoi #tintuc #hanoionline #tinhanoi #thoitiet #thoitiethomnay [...] [](",
+                "score": 0.9049283
+              },
+              {
+                "title": "Dự báo thời tiết Hà Nội 10 ngày tới rét nhất 16 độ C",
+                "url": "https://laodong.vn/du-lich/cong-dong/du-bao-thoi-tiet-ha-noi-10-ngay-toi-ret-nhat-16-do-c-1797489.html",
+                "source": "laodong.vn",
+                "summary": "Theo tin thời tiết mới nhất từ Trung tâm Dự báo Khí tượng Thủy văn Quốc gia, không khí lạnh đã ảnh hưởng đến khu vực Tây Bắc Bộ, Bắc Trung Bộ và một số nơi ở Trung Trung Bộ.\n\nThời tiết Hà Nội hôm nay có mưa, nhiệt độ thấp nhất ở mức 15 - 16 độ C, độ ẩm 91%.\n\nTheo dự báo thời tiết 10 ngày tới của Trung tâm Dự báo khí tượng thủy văn quốc gia, Hà Nội có xu hướng tăng nhiệt từ ngày 10.11, mưa dông có khả năng xuất hiện trở lại vào ngày 12 - 13.11. [...] Từ ngày 14.11, thời tiết Hà Nội có xu hướng khô ráo hơn.\n\nNgày 14.11, trời có mây, không mưa, nhiệt độ dao động 20 - 28 độ C.\n\nNgày 15.11, nhiệt độ tiếp tục tăng, thấp nhất 23 độ C, cao nhất 29 độ C. Trời có mây, không mưa.\n\nTrong hai ngày 16 - 17.11, Hà Nội có mây, không mưa. Nhiệt độ thấp nhất phổ biến 23 - 24 độ C, cao nhất khoảng 30 độ C.\n\nĐến ngày 18 - 19.11, nhiệt độ giảm nhẹ, dao động 21 - 27 độ C. Thời tiết có mây, không mưa. [...] Cụ thể, ngày 10.11, Hà Nội nhiều mây, không mưa, nhiệt độ thấp nhất 17 độ C, cao nhất 23 độ C. Gió đông bắc tốc độ 3 m/s.\n\nNgày 11.11, thời tiết tiếp tục nhiều mây, không mưa. Nhiệt độ dao động 16 - 24 độ C, gió đông bắc tốc độ 1 m/s.\n\nĐến ngày 12.11, Hà Nội nhiều mây, có mưa dông. Nhiệt độ thấp nhất 16 độ C, cao nhất 23 độ C. Gió tây bắc tốc độ 3 m/s.\n\nNgày 13.11, khu vực Thủ đô tiếp tục nhiều mây, có mưa dông, nhiệt độ tăng lên 18 - 26 độ C.",
+                "score": 0.8785752
+              },
+              {
+                "title": "Thời tiết Hà Nội hôm nay - Dự báo thời tiết ngày mai và 7 ngày tới",
+                "url": "https://baomoi.com/tien-ich-thoi-tiet-ha-noi.epi",
+                "source": "baomoi.com",
+                "summary": "### Dự báo thời tiết tối | 07/11/2026\n\n7333 liên quan\n\nTối và đêm nay, Hà Nội tiếp tục nhiều my, mưa rào và dông vẫn diễn ra ở nhiều khu vực, nhiệt độ giảm về mức 25 độ. Độ ẩm 86-95%.\n\n### Thời tiết hôm nay 8.11: Hà Nội cục bộ có nơi mưa to\n\n2152 liên quan\n\nTheo Trung tm Dự báo Khí tượng Thủy văn Quốc gia, ngày 8.11, Bắc Bộ có mưa rào và dông rải rác, cục bộ có nơi mưa to. Trung Bộ có mưa dông vài nơi. Riêng Nam Bộ có mưa rào và dông vài nơi, nhiệt độ cao nhất 34°C. [...] My rải rác\n\n15/11\n\n23° - 31°\n\nSáng nhiều my, chiều nắng ấm\n\nNguồn: weather.com\n\n## Chủ đề\n\n Tin bão mới nhất\n Tin không khí lạnh\n Tin áp thấp nhiệt đới\n\n## Tin tức thời tiết Hà Nộihôm nay\n\n### Dự báo thời tiết ngày 9/11: Hà Nội giảm nhiệt xuống 17 độ, mưa dông diện rộng\n\n4718 liên quan [...] Hà Nội\n\nHà NộiTP. Hồ Chí MinhĐà NẵngAn GiangBắc NinhCà MauCần ThơCao BằngĐắk LắkĐiện BiênĐồng NaiĐồng ThápGia LaiHà TĩnhHải PhòngHưng YênKhánh HòaLai ChuLm ĐồngLạng SơnLào CaiNghệ AnNinh BìnhPhú ThọQuảng NgãiQuảng NinhQuảng TrịSơn LaTy NinhThái NguyênThanh HóaThừa Thiên HuếTuyên QuangVĩnh Long\n\n09/11\n\n17° - 19°\n\nMưa nhẹ\n\n10/11\n\n16° - 22°\n\nSáng nhiều my, chiều nắng ấm\n\n11/11\n\n18° - 24°\n\nMy rải rác\n\n12/11\n\n18° - 23°\n\nNhiều my\n\n13/11\n\n20° - 25°\n\nMưa rào vào buổi sáng\n\n14/11\n\n22° - 28°\n\nMy rải rác",
+                "score": 0.8773195
+              },
+              {
+                "title": "Dự báo thời tiết Hà Nội 30 ngày tới - Thoitiet.vn",
+                "url": "https://thoitiet.vn/ha-noi/30-ngay-toi",
+                "source": "thoitiet.vn",
+                "summary": "Thành phố của bạn:   Hà Nội   Thay đổi\n\nGiờ địa phương:  06:52 | 21/10/2026\n\n# Dự báo thời tiết Hà Nội 30 ngày tới\n\n## Hôm nay\n\n23.8°C   /  32.1°C\n\nMưa nhẹ  Mưa nhẹ\n\n2.02 km/giờ\n\n###### Ngày/Đêm\n\n32.3/ 25.4°\n\n###### Sáng/Tối\n\n25.2/ 27.8°\n\n###### Áp suất\n\n### 1015 mb\n\n###### Gió\n\n### 2.02 km/giờ\n\n###### Mặt trời mọc/lặn\n\n05:53  17:28\n\nMưa nhẹ\n\n  \n\n## T5 22/10\n\n23.8°C   /  30.9°C\n\nMưa nhẹ  Mưa nhẹ\n\n2.66 km/giờ\n\n###### Ngày/Đêm\n\n30.9/ 23.4°\n\n###### Sáng/Tối\n\n25.9/ 26.6°\n\n###### Áp suất\n\n### 1013 mb [...] ###### Ngày/Đêm\n\n27.3/ 23.8°\n\n###### Sáng/Tối\n\n23.5/ 23.2°\n\n###### Áp suất\n\n### 1017 mb\n\n###### Gió\n\n### 2.72 km/giờ\n\n###### Mặt trời mọc/lặn\n\n06:09  17:14\n\nMưa nhẹ\n\nHà Nội\n\nĐã cập nhật 24 phút trước\n\nMưa nhẹ 25.7°\n\nMưa nhẹ\n\nCảm giác như 26.9°.\n\n### Dự báo những ngày tới\n\nHôm nay Ngày mai 3 ngày 5 ngày\n\n7 ngày 10 ngày 15 ngày 30 ngày\n\n###### Mặt trời mọc/lặn\n\n05:53  17:28\n\n###### Độ ẩm\n\n###### Áp suất\n\n### 1016 mb\n\n###### Tầm nhìn\n\n### 10 km\n\n### 2.1 km/giờ\n\n###### Điểm ngưng\n\n### 24.2 °C",
+                "score": 0.8446273
+              },
+              {
+                "title": "Bản tin Thời tiết Hà Nội (10 - 11/11): Mưa lạnh mở rộng, Thủ đô rét 16 độ C",
+                "url": "https://www.youtube.com/watch?v=ZRRnlwbAcLM",
+                "source": "youtube.com",
+                "summary": "### Transcript\n[0:11] Hiện nay khối không khí lạnh gây mưa đang mở rộng ảnh hưởng tại khu vực Bắc Bộ. Thủ đô Hà Nội trong 24 giờ tới tiếp tục giảm nhiệt sâu, cảm nhận rét rõ rệt, đặc biệt về đêm và sáng sớm.\n[0:24] Chi tiết thời tiết thủ đô Hà Nội ngày mùng 10 11 tháng 11. Nhiều mây có mưa vài nơi, gió đông bắc cấp ba cấp b trời\n[0:32] rét. Nhiệt độ thấp nhất về đêm từ 16 đến 18° C. Nhiệt độ cao nhất ban ngày từ 21 đến 23° C. Do ảnh hưởng không khí lạnh [...] ### Description\n1,729 views\nPosted: 2026-11-09\nHiện nay khối không khí lạnh gây mưa đang mở rộng ảnh hưởng tại khu vực Bắc Bộ. Thủ đô Hà Nội trong 24 giờ tới tiếp tục giảm nhiệt sâu, cảm nhận rét rõ rệt đặc biệt về đêm và sáng sớm. [...] # Bản tin Thời tiết Hà Nội (10 - 11/11): Mưa lạnh mở rộng, Thủ đô rét 16 độ C\n## Channel: Báo Tiền Phong News (verified)\n1.18M subscribers\n3 likes",
+                "score": 0.78611463
+              }
+            ]
+          }
+        }
+      ],
+      "ended_at": "2026-11-10T14:21:33"
+    }
+  ]
+}
