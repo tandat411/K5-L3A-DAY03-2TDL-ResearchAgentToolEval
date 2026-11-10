@@ -7,7 +7,7 @@
 ## Team
 
 - Team: **2TDL**
-- Members: 
+- Members: Mai Lâm Tấn Đạt, Nguyễn Thuỳ Lam, Lục Anh Tuấn, Nguyễn Trần Tú Trân
 - Provider/model: **OpenRouter (`openai/gpt-4o-mini`) & Gemini (`gemini-3.5-flash`)**
 
 ---
