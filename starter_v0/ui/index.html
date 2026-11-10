@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Research Agent Studio — starter_v0</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Nunito+Sans:opsz,wght@6..12,400;6..12,500;6..12,600;6..12,700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f4f2ed;
+      --surface: #faf9f5;
+      --surface-2: #edeae2;
+      --surface-hover: #e6e2d8;
+      --border: #dfdbd0;
+      --border-strong: #cbc5b7;
+      --text: #282b28;
+      --text-secondary: #575c56;
+      --text-muted: #727770;
+      --primary: #486354;
+      --primary-hover: #3b5245;
+      --primary-soft: #e4ede8;
+      --accent: #b8654e;
+      --accent-soft: #f4e6e1;
+      --pass-bg: #e3eee7;
+      --pass-text: #2b573e;
+      --fail-bg: #f3e3e0;
+      --fail-text: #843b33;
+      --warn-bg: #f2eadc;
+      --warn-text: #73552a;
+      --radius-sm: 7px;
+      --radius-md: 11px;
+      --radius-lg: 14px;
+      --shadow-sm: 0 1px 3px rgba(40, 43, 40, 0.04);
+    }
+
+    * { box-sizing: border-box; }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 15px;
+      line-height: 1.55;
+      height: 100vh;
+      display: flex;
+      overflow: hidden;
+    }
+
+    code, pre, .mono {
+      font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+
+    button, select, input, textarea {
+      font-family: inherit;
+      font-size: inherit;
+      color: inherit;
+    }
+
+    button, select, .clickable {
+      cursor: pointer;
+      transition: background-color 180ms ease, border-color 180ms ease, color 180ms ease, opacity 180ms ease;
+    }
+
+    button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-visible {
+      outline: 2px solid var(--primary);
+      outline-offset: 2px;
+    }
+
+    .icon {
+      width: 18px;
+      height: 18px;
+      stroke: currentColor;
+      stroke-width: 1.85;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+      flex-shrink: 0;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 290px;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      height: 100vh;
+    }
+
+    .brand {
+      padding: 18px 18px 14px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 11px;
+    }
+
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+      border-radius: 9px;
+      background: var(--primary-soft);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #cfe0d6;
+    }
+
+    .brand-title {
+      font-weight: 700;
+      font-size: 16px;
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+    }
+
+    .brand-sub {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    .sidebar-body {
+      padding: 16px;
+      overflow-y: auto;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .section-title {
+      font-size: 11.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-secondary);
+      margin: 0 0 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      margin-bottom: 10px;
+    }
+
+    .field label {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .field select, .field input {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 7px 10px;
+      font-size: 13.5px;
+    }
+
+    .hash-pill {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 8px 10px;
+      font-size: 11.5px;
+      color: var(--text-secondary);
+      word-break: break-all;
+      line-height: 1.4;
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      width: 100%;
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      font-weight: 600;
+      font-size: 13px;
+      color: var(--text);
+    }
+
+    .btn-secondary:hover {
+      background: var(--surface-hover);
+      border-color: var(--border-strong);
+    }
+
+    .tool-list {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .tool-chip {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 6px 9px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 12.5px;
+      text-align: left;
+    }
+
+    .tool-chip:hover {
+      background: var(--surface-2);
+      border-color: var(--border-strong);
+    }
+
+    .tool-chip code {
+      font-weight: 500;
+      color: var(--primary);
+      font-size: 12px;
+    }
+
+    .tool-chip span {
+      color: var(--text-secondary);
+      font-size: 11.5px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 155px;
+    }
+
+    /* Main area */
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      min-width: 0;
+    }
+
+    .topbar {
+      height: 56px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-shrink: 0;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 6px;
+    }
+
+    .tab-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 14px;
+      border-radius: var(--radius-sm);
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--text-secondary);
+      font-weight: 600;
+      font-size: 13.5px;
+    }
+
+    .tab-btn:hover {
+      background: var(--surface-2);
+      color: var(--text);
+    }
+
+    .tab-btn.active {
+      background: var(--primary-soft);
+      color: var(--primary);
+      border-color: #c9ddd1;
+    }
+
+    .session-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12.5px;
+      color: var(--text-secondary);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 2px 9px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .badge-pass { background: var(--pass-bg); color: var(--pass-text); }
+    .badge-fail { background: var(--fail-bg); color: var(--fail-text); }
+    .badge-warn { background: var(--warn-bg); color: var(--warn-text); }
+    .badge-neutral { background: var(--surface-2); color: var(--text-secondary); }
+
+    .view-panel {
+      display: none;
+      flex: 1;
+      overflow: hidden;
+      flex-direction: column;
+    }
+
+    .view-panel.active {
+      display: flex;
+    }
+
+    /* Chat View */
+    .chat-scroll {
+      flex: 1;
+      overflow-y: auto;
+      padding: 24px;
+    }
+
+    .chat-container {
+      max-width: 840px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .empty-state {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      margin-top: 12px;
+    }
+
+    .empty-state h2 {
+      margin: 0 0 6px;
+      font-size: 19px;
+      font-weight: 700;
+    }
+
+    .empty-state p {
+      margin: 0 0 18px;
+      color: var(--text-secondary);
+      font-size: 14px;
+    }
+
+    .sample-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(235px, 1fr));
+      gap: 10px;
+    }
+
+    .sample-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 11px 13px;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .sample-card:hover {
+      background: var(--surface-2);
+      border-color: var(--primary);
+    }
+
+    .sample-tag {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--primary);
+    }
+
+    .sample-text {
+      font-size: 13.5px;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    .turn-card {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .msg-user {
+      align-self: flex-end;
+      background: var(--primary);
+      color: #ffffff;
+      padding: 10px 15px;
+      border-radius: 14px 14px 3px 14px;
+      max-width: 78%;
+      font-size: 14.5px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .msg-agent {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 15px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .msg-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--text-secondary);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 8px;
+    }
+
+    .tool-trace-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .tool-trace {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+    }
+
+    .tool-trace summary {
+      padding: 8px 12px;
+      font-size: 12.5px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      cursor: pointer;
+      user-select: none;
+      background: var(--surface-2);
+    }
+
+    .tool-trace summary:hover {
+      background: var(--surface-hover);
+    }
+
+    .tool-trace-body {
+      padding: 10px 12px;
+      border-top: 1px solid var(--border);
+      font-size: 12.5px;
+      overflow-x: auto;
+    }
+
+    .tool-trace-body pre {
+      margin: 0;
+      font-size: 12px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .items-preview {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .item-row {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 7px 10px;
+    }
+
+    .item-row a {
+      color: var(--primary);
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .item-row a:hover {
+      text-decoration: underline;
+    }
+
+    .agent-answer {
+      white-space: pre-wrap;
+      font-size: 14.5px;
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .clarify-box {
+      background: var(--warn-bg);
+      border: 1px solid #e0d1b8;
+      border-radius: var(--radius-sm);
+      padding: 11px 13px;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+
+    .clarify-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .btn-Quick {
+      padding: 6px 13px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-strong);
+      background: var(--surface);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .btn-Quick.primary {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    .btn-Quick.primary:hover {
+      background: var(--primary-hover);
+    }
+
+    /* Composer */
+    .composer-wrap {
+      padding: 14px 24px 20px;
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+    }
+
+    .composer {
+      max-width: 840px;
+      margin: 0 auto;
+      background: var(--surface);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-md);
+      padding: 8px 10px;
+      display: flex;
+      align-items: flex-end;
+      gap: 10px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .composer textarea {
+      flex: 1;
+      border: none;
+      background: transparent;
+      resize: none;
+      padding: 6px 4px;
+      min-height: 36px;
+      max-height: 140px;
+      line-height: 1.45;
+      outline: none;
+    }
+
+    .btn-send {
+      background: var(--primary);
+      color: #ffffff;
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 9px 16px;
+      font-weight: 600;
+      font-size: 13.5px;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      min-height: 40px;
+    }
+
+    .btn-send:hover:not(:disabled) {
+      background: var(--primary-hover);
+    }
+
+    .btn-send:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    /* Eval View */
+    .eval-scroll {
+      flex: 1;
+      overflow-y: auto;
+      padding: 24px;
+    }
+
+    .eval-container {
+      max-width: 1220px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
+      gap: 12px;
+    }
+
+    .kpi-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+    }
+
+    .kpi-label {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-bottom: 4px;
+    }
+
+    .kpi-val {
+      font-size: 22px;
+      font-weight: 700;
+    }
+
+    .filter-bar {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .filter-bar input[type="search"], .filter-bar select {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 7px 11px;
+      font-size: 13.5px;
+    }
+
+    .filter-bar input[type="search"] {
+      flex: 1 1 240px;
+    }
+
+    .table-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 13.5px;
+    }
+
+    th, td {
+      padding: 10px 13px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+
+    th {
+      background: var(--surface-2);
+      color: var(--text-secondary);
+      font-size: 11.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    tbody tr:hover {
+      background: #f3f0e8;
+    }
+
+    /* Artifacts View */
+    .artifacts-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .panel-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .panel-card h3 {
+      margin: 0;
+      font-size: 15px;
+    }
+
+    .code-box {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 12px;
+      font-size: 12.5px;
+      white-space: pre-wrap;
+      overflow-y: auto;
+      max-height: 62vh;
+      margin: 0;
+    }
+
+    @media (max-width: 900px) {
+      body { flex-direction: column; overflow: auto; height: auto; }
+      .sidebar { width: 100%; height: auto; border-right: none; border-bottom: 1px solid var(--border); }
+      .main { height: auto; }
+      .artifacts-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark" aria-hidden="true">
+        <svg class="icon" viewBox="0 0 24 24">
+          <path d="M12 3l1.9 5.8a2 2 0 0 0 1.3 1.3L21 12l-5.8 1.9a2 2 0 0 0-1.3 1.3L12 21l-1.9-5.8a2 2 0 0 0-1.3-1.3L3 12l5.8-1.9a2 2 0 0 0 1.3-1.3L12 3z"/>
+        </svg>
+      </div>
+      <div>
+        <div class="brand-title">Research Agent</div>
+        <div class="brand-sub">Day 03 Tool Eval Studio</div>
+      </div>
+    </div>
+
+    <div class="sidebar-body">
+      <div>
+        <div class="section-title">Cấu hình Phiên</div>
+        <div class="field">
+          <label for="provider-select">Model Provider</label>
+          <select id="provider-select">
+            <option value="openrouter">openrouter (Recommended)</option>
+            <option value="openai">openai</option>
+            <option value="anthropic">anthropic</option>
+            <option value="gemini">gemini</option>
+            <option value="ollama">ollama (Local)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="version-input">Artifact Version Tag</label>
+          <input id="version-input" type="text" value="v0" placeholder="v0, v1, v2, v3..." />
+        </div>
+        <div class="field">
+          <label for="model-input">Model Override (tuỳ chọn)</label>
+          <input id="model-input" type="text" placeholder="Để trống dùng default" />
+        </div>
+        <button class="btn-secondary" id="new-session-btn" type="button">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+          Tạo phiên Chat mới
+        </button>
+      </div>
+
+      <div>
+        <div class="section-title">Artifact Hash hiện tại</div>
+        <div class="hash-pill mono" id="artifact-hash-box">Đang tải...</div>
+      </div>
+
+      <div>
+        <div class="section-title">
+          <span>Tools đã khai báo</span>
+          <span class="badge badge-neutral" id="tools-count">0</span>
+        </div>
+        <div class="tool-list" id="sidebar-tools"></div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Workspace -->
+  <main class="main">
+    <header class="topbar">
+      <nav class="tabs" aria-label="Chế độ xem">
+        <button class="tab-btn active" data-tab="chat" type="button">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          Trò chuyện Live
+        </button>
+        <button class="tab-btn" data-tab="eval" type="button">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 16l4-4 4 4 5-6"/></svg>
+          Run Logs & Bộ lọc Eval
+        </button>
+        <button class="tab-btn" data-tab="artifacts" type="button">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+          Prompt & Tools YAML
+        </button>
+      </nav>
+
+      <div class="session-meta">
+        <span>Transcript: <code id="transcript-label">chưa lưu</code></span>
+      </div>
+    </header>
+
+    <!-- TAB 1: Live Chat -->
+    <section class="view-panel active" id="panel-chat">
+      <div class="chat-scroll" id="chat-scroll">
+        <div class="chat-container" id="chat-messages">
+          <div class="empty-state" id="empty-state">
+            <h2>Thử nghiệm Research Agent trực tiếp</h2>
+            <p>Mỗi lượt hội thoại gọi trực tiếp vòng lặp <code>run_model_tool_loop</code> từ <code>chat.py</code>, hiển thị rõ các lệnh gọi tool + tham số và tự động ghi file JSON vào <code>starter_v0/transcripts/</code>.</p>
+            <div class="sample-grid">
+              <button class="sample-card" type="button" data-prompt="Tin tức AI hôm nay có gì nổi bật?">
+                <span class="sample-tag">Web News · lookup</span>
+                <span class="sample-text">Tin tức AI hôm nay có gì nổi bật?</span>
+              </button>
+              <button class="sample-card" type="button" data-prompt="Tweet mới nhất của Sam Altman là gì?">
+                <span class="sample-tag">Timeline · handle mapping</span>
+                <span class="sample-text">Tweet mới nhất của Sam Altman là gì?</span>
+              </button>
+              <button class="sample-card" type="button" data-prompt="Tóm tắt 5 tweet mới nhất giúp mình">
+                <span class="sample-tag">Missing Info · clarify</span>
+                <span class="sample-text">Tóm tắt 5 tweet mới nhất giúp mình</span>
+              </button>
+              <button class="sample-card" type="button" data-prompt="Đăng bản tin AI hôm nay lên Telegram giúp mình">
+                <span class="sample-tag">Write Boundary · send</span>
+                <span class="sample-text">Đăng bản tin AI hôm nay lên Telegram giúp mình</span>
+              </button>
+              <button class="sample-card" type="button" data-prompt="Theo company policy, tweet viral có được coi là fact đã xác nhận không?">
+                <span class="sample-tag">Internal KB · policy</span>
+                <span class="sample-text">Theo company policy, tweet viral có được coi là fact đã xác nhận không?</span>
+              </button>
+              <button class="sample-card" type="button" data-prompt="Tìm paper arXiv về retrieval augmented generation evaluation.">
+                <span class="sample-tag">Academic · papers</span>
+                <span class="sample-text">Tìm paper arXiv về retrieval augmented generation evaluation.</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="composer-wrap">
+        <form class="composer" id="chat-form">
+          <textarea id="chat-input" rows="1" placeholder="Nhập yêu cầu nghiên cứu cho Agent (Enter để gửi, Shift+Enter xuống dòng)..." aria-label="Nội dung tin nhắn"></textarea>
+          <button class="btn-send" id="send-btn" type="submit">
+            <span>Gửi</span>
+            <svg class="icon" viewBox="0 0 24 24"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <!-- TAB 2: Eval & Run Logs -->
+    <section class="view-panel" id="panel-eval">
+      <div class="eval-scroll">
+        <div class="eval-container">
+          <div class="filter-bar">
+            <label for="run-select" style="font-weight:600;font-size:13px;">Run JSON:</label>
+            <select id="run-select" style="min-width:280px;"></select>
+            <input type="search" id="eval-search" placeholder="Lọc theo case_id, query, tool, lỗi..." aria-label="Tìm kiếm eval case" />
+            <select id="eval-status" aria-label="Lọc trạng thái">
+              <option value="all">Trạng thái: Tất cả</option>
+              <option value="pass"> chỉ PASS</option>
+              <option value="fail">chỉ FAIL</option>
+            </select>
+            <select id="eval-type" aria-label="Lọc loại lỗi">
+              <option value="all">Failure Type: Tất cả</option>
+            </select>
+          </div>
+
+          <div class="kpi-grid" id="eval-kpis"></div>
+
+          <div class="table-card">
+            <table>
+              <thead>
+                <tr>
+                  <th>Case ID</th>
+                  <th>Turn</th>
+                  <th>Status</th>
+                  <th>Expected → Actual Tool</th>
+                  <th>Routing / Args</th>
+                  <th>Failure Type</th>
+                  <th>Observed Mismatch & Chi tiết</th>
+                </tr>
+              </thead>
+              <tbody id="eval-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: Artifacts -->
+    <section class="view-panel" id="panel-artifacts">
+      <div class="eval-scroll">
+        <div class="eval-container">
+          <div class="artifacts-grid">
+            <div class="panel-card">
+              <h3>artifacts/system_prompt.md</h3>
+              <pre class="code-box mono" id="prompt-viewer"></pre>
+            </div>
+            <div class="panel-card">
+              <h3>artifacts/tools.yaml (Parsed Declarations)</h3>
+              <pre class="code-box mono" id="tools-viewer"></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    let currentSessionId = null;
+    let appState = null;
+    let currentRunData = null;
+    let isSending = false;
+
+    function esc(s) {
+      return String(s ?? "").replace(/[&<>"']/g, m => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+      }[m]));
+    }
+
+    // Tabs switching
+    document.querySelectorAll(".tab-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+        document.querySelectorAll(".view-panel").forEach(p => p.classList.remove("active"));
+        btn.classList.add("active");
+        document.getElementById("panel-" + btn.dataset.tab).classList.add("active");
+      });
+    });
+
+    async function loadState() {
+      const version = document.getElementById("version-input").value.trim() || "v0";
+      const res = await fetch(`/api/state?version=${encodeURIComponent(version)}`);
+      appState = await res.json();
+
+      document.getElementById("artifact-hash-box").textContent = appState.artifact_version || "—";
+      document.getElementById("tools-count").textContent = (appState.tools || []).length;
+      document.getElementById("prompt-viewer").textContent = appState.system_prompt || "";
+      document.getElementById("tools-viewer").textContent = JSON.stringify(appState.tools || [], null, 2);
+
+      const toolsEl = document.getElementById("sidebar-tools");
+      toolsEl.innerHTML = (appState.tools || []).map(t => `
+        <button class="tool-chip" type="button" title="${esc(t.description)}">
+          <code>${esc(t.name)}</code>
+          <span>${esc(t.description)}</span>
+        </button>
+      `).join("");
+
+      const runSel = document.getElementById("run-select");
+      const runs = appState.runs || [];
+      if (runs.length) {
+        runSel.innerHTML = runs.map(r =>
+          `<option value="${esc(r.file)}">${esc(r.version)} · ${esc(r.suite)} · acc=${Math.round((r.summary?.case_accuracy || 0)*100)}% (${esc(r.file)})</option>`
+        ).join("");
+        await loadRunFile(runs[0].file);
+      } else {
+        runSel.innerHTML = `<option value="">Chưa có file run JSON</option>`;
+      }
+    }
+
+    async function loadRunFile(filename) {
+      if (!filename) return;
+      const res = await fetch(`/api/run?file=${encodeURIComponent(filename)}`);
+      if (!res.ok) return;
+      currentRunData = await res.json();
+
+      const results = currentRunData.results || [];
+      const types = [...new Set(results.map(r => r.result?.case_failure_type).filter(Boolean))].sort();
+      const typeSel = document.getElementById("eval-type");
+      typeSel.innerHTML = `<option value="all">Failure Type: Tất cả</option>` +
+        types.map(t => `<option value="${esc(t)}">${esc(t)}</option>`).join("");
+
+      renderEvalTable();
+    }
+
+    function renderEvalTable() {
+      if (!currentRunData) return;
+      const q = document.getElementById("eval-search").value.trim().toLowerCase();
+      const status = document.getElementById("eval-status").value;
+      const ftype = document.getElementById("eval-type").value;
+
+      const all = currentRunData.results || [];
+      const filtered = all.filter(item => {
+        const res = item.result || {};
+        if (status === "pass" && !res.passed) return false;
+        if (status === "fail" && res.passed) return false;
+        if (ftype !== "all" && res.case_failure_type !== ftype) return false;
+        if (q) {
+          const hay = [
+            item.id,
+            item.input,
+            JSON.stringify(item.expect),
+            JSON.stringify(res.actual_tool_calls),
+            res.case_failure_type,
+            res.observed_mismatch,
+            (res.failures || []).join(" ")
+          ].join(" ").toLowerCase();
+          if (!hay.includes(q)) return false;
+        }
+        return true;
+      });
+
+      const s = currentRunData.summary || {};
+      const pct = v => v != null ? Math.round(v * 100) + "%" : "—";
+      document.getElementById("eval-kpis").innerHTML = `
+        <div class="kpi-card"><div class="kpi-label">Case Accuracy</div><div class="kpi-val" style="color:var(--pass-text)">${pct(s.case_accuracy)} (${s.passed_cases ?? 0}/${s.measured_cases ?? 0})</div></div>
+        <div class="kpi-card"><div class="kpi-label">Tool Routing Accuracy</div><div class="kpi-val">${pct(s.tool_routing_accuracy)}</div></div>
+        <div class="kpi-card"><div class="kpi-label">Argument Accuracy</div><div class="kpi-val">${pct(s.argument_accuracy)}</div></div>
+        <div class="kpi-card"><div class="kpi-label">Multi-turn Accuracy</div><div class="kpi-val">${pct(s.multiturn_accuracy)}</div></div>
+      `;
+
+      const tbody = document.getElementById("eval-tbody");
+      if (!filtered.length) {
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:28px;color:var(--text-secondary);">Không có case nào khớp bộ lọc.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(item => {
+        const res = item.result || {};
+        const expCalls = (item.expect?.tool_calls || []).map(c => `${c.name}(${JSON.stringify(c.args || {})})`).join(" | ") || "no_tool";
+        const actCalls = (res.actual_tool_calls || []).map(c => `${c.name}(${JSON.stringify(c.args || {})})`).join(" | ") || "no_tool";
+        const failures = (res.failures || []).join("; ");
+        return `
+          <tr>
+            <td>
+              <strong>${esc(item.id)}</strong>
+              <div style="font-size:12px;color:var(--text-secondary);margin-top:3px;max-width:260px;">${esc(item.input)}</div>
+            </td>
+            <td><span class="badge badge-neutral">${item.is_multiturn ? "Multi" : "Single"}</span></td>
+            <td><span class="badge ${res.passed ? "badge-pass" : "badge-fail"}">${res.passed ? "PASS" : "FAIL"}</span></td>
+            <td class="mono" style="font-size:12px;max-width:300px;word-break:break-word;">
+              <div><span style="color:var(--text-secondary)">Exp:</span> ${esc(expCalls)}</div>
+              <div style="margin-top:3px;"><span style="color:var(--text-secondary)">Act:</span> ${esc(actCalls)}</div>
+            </td>
+            <td>
+              <span class="badge ${res.routing_correct ? "badge-pass" : "badge-fail"}">R:${res.routing_correct ? "✓" : "✗"}</span>
+              <span class="badge ${res.args_correct ? "badge-pass" : "badge-fail"}">A:${res.args_correct ? "✓" : "✗"}</span>
+            </td>
+            <td><span class="badge badge-neutral">${esc(res.case_failure_type)}</span></td>
+            <td>
+              ${res.observed_mismatch ? `<span class="badge badge-warn">${esc(res.observed_mismatch)}</span>` : ""}
+              ${failures ? `<div style="color:var(--fail-text);font-size:12px;margin-top:4px;">${esc(failures)}</div>` : "—"}
+            </td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    ["eval-search", "eval-status", "eval-type"].forEach(id => {
+      document.getElementById(id).addEventListener("input", renderEvalTable);
+      document.getElementById(id).addEventListener("change", renderEvalTable);
+    });
+    document.getElementById("run-select").addEventListener("change", e => loadRunFile(e.target.value));
+    document.getElementById("version-input").addEventListener("change", loadState);
+
+    // Chat logic
+    function renderToolEvents(events) {
+      if (!events || !events.length) return "";
+      return `<div class="tool-trace-list">` + events.map(ev => {
+        const res = ev.result || {};
+        const items = Array.isArray(res.items) ? res.items : [];
+        const itemsHtml = items.length ? `
+          <div class="items-preview">
+            ${items.slice(0, 5).map(it => `
+              <div class="item-row">
+                ${it.url ? `<a href="${esc(it.url)}" target="_blank" rel="noopener">${esc(it.title || it.url)}</a>` : `<strong>${esc(it.title || "Item")}</strong>`}
+                ${it.summary ? `<div style="color:var(--text-secondary);font-size:12px;margin-top:2px;">${esc(String(it.summary).slice(0, 220))}</div>` : ""}
+              </div>
+            `).join("")}
+          </div>
+        ` : "";
+        return `
+          <details class="tool-trace">
+            <summary>
+              <span class="mono"><strong>${esc(ev.tool)}</strong>(${esc(JSON.stringify(ev.args || {}))})</span>
+              <span class="badge ${res.error ? "badge-fail" : "badge-pass"}">${res.error ? "Error" : (items.length ? `${items.length} items` : "OK")}</span>
+            </summary>
+            <div class="tool-trace-body">
+              ${itemsHtml}
+              <pre class="mono">${esc(JSON.stringify(res, null, 2))}</pre>
+            </div>
+          </details>
+        `;
+      }).join("") + `</div>`;
+    }
+
+    function renderClarifyHelper(events) {
+      if (!events || !events.length) return "";
+      const last = events[events.length - 1]?.result;
+      if (!last || !last.awaiting_user) return "";
+      const rtype = last.response_type || "text";
+      const opts = Array.isArray(last.options) ? last.options : [];
+
+      if (rtype === "yes_no") {
+        return `
+          <div class="clarify-box">
+            <div style="font-size:12.5px;font-weight:700;color:var(--warn-text);">Agent đang chờ xác nhận (yes_no):</div>
+            <div class="clarify-actions">
+              <button type="button" class="btn-Quick primary quick-reply" data-reply="Đồng ý, xác nhận gửi nhé (confirmed=true)">Đồng ý, gửi ngay</button>
+              <button type="button" class="btn-Quick quick-reply" data-reply="Không, huỷ giúp mình">Huỷ bỏ</button>
+            </div>
+          </div>
+        `;
+      }
+      if (opts.length) {
+        return `
+          <div class="clarify-box">
+            <div style="font-size:12.5px;font-weight:700;color:var(--warn-text);">Chọn nhanh câu trả lời:</div>
+            <div class="clarify-actions">
+              ${opts.map(o => `<button type="button" class="btn-Quick quick-reply" data-reply="${esc(o)}">${esc(o)}</button>`).join("")}
+            </div>
+          </div>
+        `;
+      }
+      return "";
+    }
+
+    async function sendChatMessage(messageText) {
+      if (isSending) return;
+      const text = (messageText ?? "").trim();
+      if (!text) return;
+
+      isSending = true;
+      const sendBtn = document.getElementById("send-btn");
+      const inputEl = document.getElementById("chat-input");
+      sendBtn.disabled = true;
+      inputEl.value = "";
+
+      const emptyEl = document.getElementById("empty-state");
+      if (emptyEl) emptyEl.style.display = "none";
+
+      const container = document.getElementById("chat-messages");
+      const scrollEl = document.getElementById("chat-scroll");
+
+      const turnEl = document.createElement("div");
+      turnEl.className = "turn-card";
+      turnEl.innerHTML = `
+        <div class="msg-user">${esc(text)}</div>
+        <div class="msg-agent">
+          <div class="msg-header">
+            <span>Agent đang xử lý...</span>
+            <span class="badge badge-neutral">Đang chạy</span>
+          </div>
+        </div>
+      `;
+      container.appendChild(turnEl);
+      scrollEl.scrollTop = scrollEl.scrollHeight;
+
+      try {
+        const res = await fetch("/api/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            session_id: currentSessionId,
+            provider: document.getElementById("provider-select").value,
+            version: document.getElementById("version-input").value.trim() || "v0",
+            model: document.getElementById("model-input").value.trim() || null,
+            message: text
+          })
+        });
+        const data = await res.json();
+        currentSessionId = data.session_id;
+        document.getElementById("transcript-label").textContent = data.transcript_file || "—";
+        document.getElementById("artifact-hash-box").textContent = data.artifact_version || "—";
+
+        const turn = data.turn || {};
+        const statusBadge = turn.status === "waiting_for_user"
+          ? `<span class="badge badge-warn">Đợi thông tin bổ sung (clarify)</span>`
+          : turn.status === "provider_error"
+          ? `<span class="badge badge-fail">Lỗi Provider</span>`
+          : `<span class="badge badge-pass">Hoàn tất (${(turn.tool_events || []).length} tool call)</span>`;
+
+        turnEl.querySelector(".msg-agent").innerHTML = `
+          <div class="msg-header">
+            <span>Lượt #${esc(turn.turn_index)} · ${esc(data.artifact_version)}</span>
+            ${statusBadge}
+          </div>
+          ${renderToolEvents(turn.tool_events)}
+          <div class="agent-answer">${esc(turn.assistant_text || "")}</div>
+          ${renderClarifyHelper(turn.tool_events)}
+        `;
+
+        turnEl.querySelectorAll(".quick-reply").forEach(btn => {
+          btn.addEventListener("click", () => sendChatMessage(btn.dataset.reply));
+        });
+      } catch (err) {
+        turnEl.querySelector(".msg-agent").innerHTML = `
+          <div class="msg-header"><span>Lỗi kết nối</span><span class="badge badge-fail">Error</span></div>
+          <div class="agent-answer">${esc(err.message)}</div>
+        `;
+      } finally {
+        isSending = false;
+        sendBtn.disabled = false;
+        scrollEl.scrollTop = scrollEl.scrollHeight;
+        inputEl.focus();
+      }
+    }
+
+    document.getElementById("chat-form").addEventListener("submit", e => {
+      e.preventDefault();
+      sendChatMessage(document.getElementById("chat-input").value);
+    });
+
+    document.getElementById("chat-input").addEventListener("keydown", e => {
+      if (e.isComposing || e.keyCode === 229) return;
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        sendChatMessage(e.target.value);
+      }
+    });
+
+    document.querySelectorAll(".sample-card").forEach(btn => {
+      btn.addEventListener("click", () => sendChatMessage(btn.dataset.prompt));
+    });
+
+    document.getElementById("new-session-btn").addEventListener("click", async () => {
+      const res = await fetch("/api/session/new", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          provider: document.getElementById("provider-select").value,
+          version: document.getElementById("version-input").value.trim() || "v0",
+          model: document.getElementById("model-input").value.trim() || null
+        })
+      });
+      const data = await res.json();
+      currentSessionId = data.session_id;
+      document.getElementById("transcript-label").textContent = data.transcript_file;
+      const container = document.getElementById("chat-messages");
+      Array.from(container.querySelectorAll(".turn-card")).forEach(el => el.remove());
+      const emptyEl = document.getElementById("empty-state");
+      if (emptyEl) emptyEl.style.display = "block";
+    });
+
+    loadState();
+  </script>
+</body>
+</html>
+

@@ -1,1 +1,2 @@
 version,author,changed_artifact,artifact_version,prompt_hash,tools_hash,reason,hypothesis,metric_before,metric_after,run_file
+v0,team,baseline,v0+pf0c107a9d7a1+t8db0ba629f52,f0c107a9d7a1,8db0ba629f52,Chạy baseline v0 trên bộ base eval 20 cases,Đo hành vi mặc định khi system_prompt khuyến khích đoán mò và tools.yaml còn mơ hồ,,0.65,runs/v0_B_base_openrouter_20261110T100944673220.json
