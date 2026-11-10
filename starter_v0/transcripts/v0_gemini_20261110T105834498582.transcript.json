@@ -1,0 +1,28 @@
+{
+  "transcript_id": "v0_gemini_20261110T105834498582",
+  "version": "v0",
+  "artifact_version": "v0+pbef84ae3e2cd+t8db0ba629f52",
+  "prompt_hash": "bef84ae3e2cdd35b8da8d7f5c4706d1518e4d8347bf94512bf81f150b3322fb7",
+  "tools_hash": "8db0ba629f52ad1ec171bae4e4e84472c12f950fa1a6db5e1d27bad6e749b740",
+  "provider": "gemini",
+  "model": "gemini-3.5-flash",
+  "system_prompt": "/Users/tandat/Documents/ai-action-lab/K5-L3A-DAY03-2TDL-ResearchAgentToolEval/starter_v0/artifacts/system_prompt.md",
+  "tools": "/Users/tandat/Documents/ai-action-lab/K5-L3A-DAY03-2TDL-ResearchAgentToolEval/starter_v0/artifacts/tools.yaml",
+  "history_window": 5,
+  "max_tool_rounds": 4,
+  "created_at": "2026-11-10T10:58:34",
+  "updated_at": "2026-11-10T10:58:37",
+  "turns": [
+    {
+      "turn_index": 1,
+      "started_at": "2026-11-10T10:58:34",
+      "user": "hé lô",
+      "status": "provider_error",
+      "assistant_text": "Lỗi khi gọi provider: ServerError: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}",
+      "rounds": [],
+      "tool_events": [],
+      "error": "ServerError: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}",
+      "ended_at": "2026-11-10T10:58:37"
+    }
+  ]
+}

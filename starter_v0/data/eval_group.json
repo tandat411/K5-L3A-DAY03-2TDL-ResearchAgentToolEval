@@ -1,7 +1,198 @@
 {
   "dataset_id": "day04_v2_research_group",
   "dataset_role": "group",
-  "description": "Case do NHÓM tự viết thêm để cover thêm trường hợp. Mỗi case cần: id, phase='B', query HOẶC turns, failure_type (thuộc allowed_failure_types), và expect (tool_calls[...] hoặc no_tool=true). Nên kèm metadata.what_it_tests.",
+  "description": "10 team evaluation cases (5 single-turn + 5 multi-turn) covering the new github_repos tool, handle mapping, company policy, out-of-scope refusal, parallel tool calls, confirmed Telegram send, and multi-turn state tracking.",
   "allowed_failure_types": ["wrong_tool", "wrong_arg_value", "wrong_boundary", "unnecessary_tool", "out_of_scope", "missing_info"],
-  "cases": []
+  "cases": [
+    {
+      "id": "G01_github_repos_routing",
+      "phase": "B",
+      "suite": "group",
+      "query": "Tìm giúp mình 5 repository GitHub nhiều sao nhất về AI agent",
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          {"name": "github_repos", "args": {"query": "AI agent", "sort": "stars", "limit": 5}}
+        ]
+      },
+      "metadata": {
+        "skill": "routing_github_repos",
+        "difficulty": "easy",
+        "what_it_tests": "Route tới tool mới github_repos với sort=stars và limit=5 khi tìm open-source repo trên GitHub."
+      }
+    },
+    {
+      "id": "G02_karpathy_timeline_handle",
+      "phase": "B",
+      "suite": "group",
+      "query": "Lấy 3 tweet mới nhất của Andrej Karpathy",
+      "failure_type": "wrong_arg_value",
+      "expect": {
+        "tool_calls": [
+          {"name": "timeline", "args": {"screenname": "karpathy", "limit": 3}}
+        ]
+      },
+      "metadata": {
+        "skill": "handle_mapping_and_limit",
+        "difficulty": "easy",
+        "what_it_tests": "Map tên Andrej Karpathy sang handle karpathy (không có @) và trích đúng limit=3."
+      }
+    },
+    {
+      "id": "G03_policy_data_privacy_routing",
+      "phase": "B",
+      "suite": "group",
+      "query": "Theo policy công ty, có được đưa API key vào prompt không?",
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          {"name": "policy", "args": {"policy_area": "data_privacy"}}
+        ]
+      },
+      "metadata": {
+        "skill": "routing_company_policy_privacy",
+        "difficulty": "medium",
+        "what_it_tests": "Câu hỏi quy định nội bộ về API key/prompt → gọi policy với policy_area=data_privacy."
+      }
+    },
+    {
+      "id": "G04_out_of_scope_creative",
+      "phase": "B",
+      "suite": "group",
+      "query": "Viết giúp mình một bài thơ lục bát về mùa thu Hà Nội.",
+      "failure_type": "out_of_scope",
+      "expect": {
+        "no_tool": true,
+        "behavior": "refuse"
+      },
+      "metadata": {
+        "skill": "out_of_scope_creative",
+        "difficulty": "easy",
+        "what_it_tests": "Yêu cầu sáng tác thơ ngoài phạm vi research → không gọi bất kỳ tool nào."
+      }
+    },
+    {
+      "id": "G05_parallel_github_and_papers",
+      "phase": "B",
+      "suite": "group",
+      "query": "Tìm paper arXiv về RAG evaluation và tìm luôn repo GitHub về RAG evaluation.",
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          {"name": "papers", "args": {"query": "RAG evaluation"}},
+          {"name": "github_repos", "args": {"query": "RAG evaluation"}}
+        ]
+      },
+      "metadata": {
+        "skill": "parallel_papers_and_github",
+        "difficulty": "hard",
+        "what_it_tests": "Gọi song song papers và github_repos trong cùng một lượt khi user yêu cầu cả bài báo arXiv lẫn repo GitHub."
+      }
+    },
+    {
+      "id": "GM01_confirm_send_after_clarify",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        {"role": "user", "content": "Gửi bản tin 'AI Daily Digest hôm nay' lên Telegram giúp mình"},
+        {"role": "user", "content": "Mình xác nhận đồng ý gửi nhé"},
+        {"role": "user", "content": "Gửi ngay nội dung 'AI Daily Digest hôm nay' đi, mình đã xác nhận rồi"}
+      ],
+      "failure_type": "wrong_boundary",
+      "expect": {
+        "tool_calls": [
+          {"name": "send", "args": {"text": "AI Daily Digest hôm nay", "confirmed": true}}
+        ]
+      },
+      "metadata": {
+        "skill": "multiturn_confirmed_send",
+        "difficulty": "hard",
+        "what_it_tests": "Sau khi user đã xác nhận rõ ràng ở lượt sau, gọi send với confirmed=true."
+      }
+    },
+    {
+      "id": "GM02_switch_web_to_github",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        {"role": "user", "content": "Tìm tin tức trên web về LangGraph hôm nay"},
+        {"role": "user", "content": "Thôi bỏ tìm tin tức web đi, chuyển sang tìm repository trên GitHub nhé"},
+        {"role": "user", "content": "Giữ từ khóa LangGraph và lấy 3 repo nhiều sao nhất"}
+      ],
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          {"name": "github_repos", "args": {"query": "LangGraph", "sort": "stars", "limit": 3}}
+        ]
+      },
+      "metadata": {
+        "skill": "multiturn_switch_to_github_repos",
+        "difficulty": "hard",
+        "what_it_tests": "Multi-turn đổi công cụ từ lookup sang github_repos, giữ query=LangGraph và cập nhật limit=3."
+      }
+    },
+    {
+      "id": "GM03_arxiv_id_followup",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        {"role": "user", "content": "Đọc giúp mình 2 trang đầu của paper arXiv này"},
+        {"role": "user", "content": "Mã paper là 1706.03762"},
+        {"role": "user", "content": "Đúng rồi, trích xuất text 2 trang đầu của 1706.03762 giúp mình"}
+      ],
+      "failure_type": "missing_info",
+      "expect": {
+        "tool_calls": [
+          {"name": "paper_text", "args": {"arxiv_url": "1706.03762", "max_pages": 2}}
+        ]
+      },
+      "metadata": {
+        "skill": "multiturn_paper_text_fill",
+        "difficulty": "medium",
+        "what_it_tests": "Carry max_pages=2 từ lượt 1 và điền arxiv_url=1706.03762 ở lượt sau."
+      }
+    },
+    {
+      "id": "GM04_social_search_top_correction",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        {"role": "user", "content": "Tìm các tweet mới nhất về Claude 4 trên Twitter"},
+        {"role": "user", "content": "Đổi sang lấy các tweet phổ biến (top) nhất đi"},
+        {"role": "user", "content": "Vẫn giữ chủ đề Claude 4 và lấy 5 tweet top nhé"}
+      ],
+      "failure_type": "wrong_arg_value",
+      "expect": {
+        "tool_calls": [
+          {"name": "social_search", "args": {"query": "Claude 4", "search_type": "Top", "limit": 5}}
+        ]
+      },
+      "metadata": {
+        "skill": "multiturn_search_type_correction",
+        "difficulty": "medium",
+        "what_it_tests": "Giữ chủ đề Claude 4 qua các lượt và đổi search_type từ Latest sang Top."
+      }
+    },
+    {
+      "id": "GM05_missing_url_still_missing",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        {"role": "user", "content": "Tóm tắt bài báo này giúp mình"},
+        {"role": "user", "content": "Bài viết mình vừa mở trên trình duyệt đó"},
+        {"role": "user", "content": "Bạn tóm tắt luôn bài viết đó đi"}
+      ],
+      "failure_type": "missing_info",
+      "expect": {
+        "tool_calls": [
+          {"name": "clarify", "args": {"response_type": "text"}}
+        ]
+      },
+      "metadata": {
+        "skill": "multiturn_still_missing_url",
+        "difficulty": "medium",
+        "what_it_tests": "Khi qua nhiều lượt user vẫn chưa cung cấp URL thực tế, tiếp tục gọi clarify chứ không tự bịa link."
+      }
+    }
+  ]
 }

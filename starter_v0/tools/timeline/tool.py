@@ -38,15 +38,19 @@ def _tweet_item(raw: dict[str, Any]) -> dict[str, Any]:
 
 
 def _tweets_from(data: dict[str, Any], limit: int) -> list[dict[str, Any]]:
+    parsed_limit = 5 if limit is None or str(limit).strip() == "" else int(limit)
+    if parsed_limit <= 0:
+        return []
     raw_items = data.get("timeline") or data.get("tweets") or []
     items = [_tweet_item(item) for item in raw_items if item.get("tweet_id") or item.get("id")]
-    return items[: int(limit or 5)]
+    return items[:parsed_limit]
 
 
 def get_user_tweets(screenname: str = "", limit: int = 5) -> dict[str, Any]:
     try:
-        data = _twitter_get("/timeline.php", {"screenname": screenname})
-        return {"tool": "get_user_tweets", "screenname": screenname, "items": _tweets_from(data, limit)}
+        clean_handle = (screenname or "").strip().lstrip("@")
+        data = _twitter_get("/timeline.php", {"screenname": clean_handle})
+        return {"tool": "get_user_tweets", "screenname": clean_handle, "items": _tweets_from(data, limit)}
     except Exception as exc:
         return err("get_user_tweets", exc)
 
