@@ -6,9 +6,9 @@
 
 ## Team
 
-- Team: Chưa được cung cấp.
-- Members: Chưa được cung cấp.
-- Provider/model: OpenRouter / `openai/gpt-4o-mini` (theo các run v0–v3 hiện có).
+- Team: 2TDL
+- Members: Nguyễn Thùy Lam - 2A202603632.
+- Provider/model: OpenRouter - `openai/gpt-4o-mini`.
 
 ---
 
