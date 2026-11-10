@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2TDL Research Agent - Day 03 Poster</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #090d16;
+      --card-bg: rgba(22, 27, 46, 0.85);
+      --card-border: rgba(99, 102, 241, 0.2);
+      --accent: #6366f1;
+      --accent-glow: rgba(99, 102, 241, 0.4);
+      --emerald: #10b981;
+      --cyan: #06b6d4;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg);
+      background-image: radial-gradient(circle at 15% 20%, rgba(99, 102, 241, 0.15) 0%, transparent 40%),
+                        radial-gradient(circle at 85% 80%, rgba(6, 182, 212, 0.12) 0%, transparent 40%);
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 30px 20px;
+    }
+
+    .poster {
+      max-width: 1000px;
+      width: 100%;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      padding: 40px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6), 0 0 40px var(--accent-glow);
+      backdrop-filter: blur(16px);
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding-bottom: 24px;
+      margin-bottom: 28px;
+    }
+
+    .badge-group {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .badge-primary { background: rgba(99, 102, 241, 0.2); color: #a5b4fc; border: 1px solid rgba(99, 102, 241, 0.4); }
+    .badge-success { background: rgba(16, 185, 129, 0.2); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.4); }
+    .badge-cyan { background: rgba(6, 182, 212, 0.2); color: #67e8f9; border: 1px solid rgba(6, 182, 212, 0.4); }
+
+    h1 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #fff 30%, #a5b4fc 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 8px;
+    }
+
+    .tagline {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      line-height: 1.5;
+    }
+
+    .demo-box {
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(6, 182, 212, 0.15));
+      border: 1px solid rgba(99, 102, 241, 0.35);
+      border-radius: 16px;
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 32px;
+    }
+
+    .demo-info span {
+      display: block;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .demo-url {
+      font-family: 'JetBrains Mono', monospace;
+      color: #67e8f9;
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 1.05rem;
+    }
+
+    .demo-btn {
+      background: linear-gradient(135deg, #6366f1, #4f46e5);
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
+      transition: all 0.2s ease;
+    }
+
+    .demo-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.6);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 32px;
+    }
+
+    .card {
+      background: rgba(15, 20, 36, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 16px;
+      padding: 24px;
+    }
+
+    .card h2 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #e2e8f0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .tools-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .tool-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.88rem;
+    }
+
+    .tool-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      padding: 2px 8px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.08);
+      color: #c7d2fe;
+      white-space: nowrap;
+    }
+
+    .tool-tag.new {
+      background: rgba(16, 185, 129, 0.2);
+      color: #6ee7b7;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .tool-desc {
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    .prompt-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .prompt-item {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-size: 0.88rem;
+      color: #cbd5e1;
+      line-height: 1.4;
+      border-left: 3px solid var(--accent);
+    }
+
+    .prompt-item strong {
+      color: #a5b4fc;
+    }
+
+    .footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding-top: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .stats {
+      display: flex;
+      gap: 20px;
+    }
+
+    .stat-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 600;
+    }
+
+    .stat-badge span {
+      color: #10b981;
+    }
+  </style>
+</head>
+<body>
+  <div class="poster">
+    <div class="header">
+      <div>
+        <div class="badge-group">
+          <span class="badge badge-primary">Team 2TDL</span>
+          <span class="badge badge-success">84/84 Tests Green</span>
+          <span class="badge badge-cyan">Gemini 3.5 Flash Lite</span>
+        </div>
+        <h1>Dual-Mode Research & Logistics Studio</h1>
+        <p class="tagline">Trợ lý nghiên cứu đa kênh: Web, X/Twitter, arXiv, Tính toán CBM Logistics & Guardrail Telegram.</p>
+      </div>
+      <div style="text-align: right;">
+        <p style="font-weight: 700; color: #fff;">Nguyễn Trần Tú Trân</p>
+        <p style="font-size: 0.85rem; color: var(--text-muted); font-family: 'JetBrains Mono', monospace;">MSSV: 2A202603603</p>
+      </div>
+    </div>
+
+    <div class="demo-box">
+      <div class="demo-info">
+        <span>🌐 LINK DÙNG THỬ TRỰC TIẾP (CLOUDFLARE TUNNEL LIVE):</span>
+        <a class="demo-url" href="https://drill-advisors-recognition-logan.trycloudflare.com" target="_blank">https://drill-advisors-recognition-logan.trycloudflare.com</a>
+      </div>
+      <a class="demo-btn" href="https://drill-advisors-recognition-logan.trycloudflare.com" target="_blank">Mở Web Demo ↗</a>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <h2>🛠️ 11 Công Cụ Đã Đăng Ký</h2>
+        <div class="tools-list">
+          <div class="tool-item">
+            <span class="tool-tag new">cbm_calculator</span>
+            <span class="tool-desc"><strong>Custom Tool:</strong> Tính thể tích CBM, trọng lượng thể tích & tính cước hàng hóa.</span>
+          </div>
+          <div class="tool-item">
+            <span class="tool-tag">clarify</span>
+            <span class="tool-desc">Hỏi lại người dùng khi thiếu dữ kiện hoặc xin xác nhận hành động.</span>
+          </div>
+          <div class="tool-item">
+            <span class="tool-tag">lookup & fetch</span>
+            <span class="tool-desc">Tìm kiếm tin tức chuyên sâu trên Web và đọc chi tiết toàn văn URL.</span>
+          </div>
+          <div class="tool-item">
+            <span class="tool-tag">timeline & social_search</span>
+            <span class="tool-desc">Đọc bài đăng tài khoản chỉ định hoặc tìm kiếm từ khóa trên X/Twitter.</span>
+          </div>
+          <div class="tool-item">
+            <span class="tool-tag">papers & paper_text</span>
+            <span class="tool-desc">Tìm kiếm danh sách và trích xuất nội dung bài báo khoa học từ arXiv.</span>
+          </div>
+          <div class="tool-item">
+            <span class="tool-tag">format & send</span>
+            <span class="tool-desc">Tổng hợp Markdown digest và gửi Telegram (chỉ khi có confirmed=True).</span>
+          </div>
+          <div class="tool-item">
+            <span class="tool-tag">policy</span>
+            <span class="tool-desc">Tra cứu chính sách công ty về bản quyền và bảo mật thông tin.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>💡 Câu Hỏi Mẫu Để Test Nhanh</h2>
+        <div class="prompt-list">
+          <div class="prompt-item">
+            <strong>1. Logistics & CBM:</strong> "Tính giúp mình thể tích kiện hàng kích thước 60x40x30 cm nặng 8kg số lượng 3 thùng."
+          </div>
+          <div class="prompt-item">
+            <strong>2. Nghiên Cứu Tin Tức:</strong> "Tìm tin tức mới nhất về chip bán dẫn hôm nay và tóm tắt thành bản tin digest."
+          </div>
+          <div class="prompt-item">
+            <strong>3. Mạng Xã Hội X:</strong> "Xem các bài đăng gần đây của @sama trên Twitter và tổng hợp các chủ đề nổi bật."
+          </div>
+          <div class="prompt-item">
+            <strong>4. Guardrail Bảo Vệ:</strong> "Gửi báo cáo tin tức thị trường vừa tìm được lên Telegram giúp tôi." <em>(Agent sẽ hỏi xác nhận)</em>
+          </div>
+          <div class="prompt-item">
+            <strong>5. Chính Sách Nội Bộ:</strong> "Tra cứu chính sách công ty về việc chia sẻ thông tin nghiên cứu ra bên ngoài."
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="stats">
+        <div class="stat-badge">Eval v3: <span>0.8500</span></div>
+        <div class="stat-badge">Group Eval: <span>90% (100% Multi-turn)</span></div>
+        <div class="stat-badge">Unit Tests: <span>84 Passed</span></div>
+      </div>
+      <div>Day 03 Lab v2 — K5 Advanced Agentic Coding</div>
+    </div>
+  </div>
+</body>
+</html>

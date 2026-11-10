@@ -1,7 +1,308 @@
 {
   "dataset_id": "day04_v2_research_group",
   "dataset_role": "group",
-  "description": "Case do NHÓM tự viết thêm để cover thêm trường hợp. Mỗi case cần: id, phase='B', query HOẶC turns, failure_type (thuộc allowed_failure_types), và expect (tool_calls[...] hoặc no_tool=true). Nên kèm metadata.what_it_tests.",
-  "allowed_failure_types": ["wrong_tool", "wrong_arg_value", "wrong_boundary", "unnecessary_tool", "out_of_scope", "missing_info"],
-  "cases": []
+  "description": "Bộ eval 10 cases do nhóm 2TDL xây dựng (5 single-turn và 5 multi-turn) bao gồm kiểm tra routing tool mới cbm_calculator, kiểm tra boundary, trích xuất tham số và chuyển đổi ngữ cảnh.",
+  "allowed_failure_types": [
+    "wrong_tool",
+    "wrong_arg_value",
+    "wrong_boundary",
+    "unnecessary_tool",
+    "out_of_scope",
+    "missing_info"
+  ],
+  "cases": [
+    {
+      "id": "G01_cbm_calculator_routing",
+      "phase": "B",
+      "suite": "group",
+      "query": "Tính giúp mình thể tích kiện hàng thủ công mỹ nghệ kích thước 50x40x30 cm, nặng 5kg, số lượng 2 thùng",
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "cbm_calculator",
+            "args": {
+              "length_cm": 50,
+              "width_cm": 40,
+              "height_cm": 30,
+              "weight_kg": 5,
+              "quantity": 2
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "routing_cbm_calculator",
+        "difficulty": "medium",
+        "what_it_tests": "Route chính xác tới custom tool cbm_calculator và trích đúng length, width, height, weight, quantity."
+      }
+    },
+    {
+      "id": "G02_cbm_calculator_default_args",
+      "phase": "B",
+      "suite": "group",
+      "query": "Tính CBM cho một kiện hàng kích thước dài 60cm, rộng 40cm, cao 25cm",
+      "failure_type": "wrong_arg_value",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "cbm_calculator",
+            "args": {
+              "length_cm": 60,
+              "width_cm": 40,
+              "height_cm": 25
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "cbm_calculator_defaults",
+        "difficulty": "easy",
+        "what_it_tests": "Gọi cbm_calculator khi không có weight và quantity (sử dụng giá trị mặc định)."
+      }
+    },
+    {
+      "id": "G03_social_search_latest",
+      "phase": "B",
+      "suite": "group",
+      "query": "Tìm các bài đăng mới nhất trên Twitter về xuất khẩu gốm sứ Bát Tràng",
+      "failure_type": "wrong_arg_value",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "social_search",
+            "args": {
+              "search_type": "Latest"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "social_search_latest",
+        "difficulty": "easy",
+        "what_it_tests": "'mới nhất' trên mạng xã hội -> search_type=Latest."
+      }
+    },
+    {
+      "id": "G04_out_of_scope_cooking",
+      "phase": "B",
+      "suite": "group",
+      "query": "Hướng dẫn mình cách nấu món phở bò truyền thống tại nhà",
+      "failure_type": "out_of_scope",
+      "expect": {
+        "no_tool": true,
+        "behavior": "refuse"
+      },
+      "metadata": {
+        "skill": "out_of_scope_cooking",
+        "difficulty": "easy",
+        "what_it_tests": "Câu hỏi nấu ăn ngoài phạm vi research -> không gọi tool."
+      }
+    },
+    {
+      "id": "G05_clarify_missing_shipping_dimensions",
+      "phase": "B",
+      "suite": "group",
+      "query": "Tính cước thể tích CBM cho lô hàng thủ công của mình với",
+      "failure_type": "missing_info",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "response_type": "text"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "clarify_missing_dimensions",
+        "difficulty": "medium",
+        "what_it_tests": "Yêu cầu tính CBM nhưng không cung cấp kích thước -> gọi clarify hỏi lại."
+      }
+    },
+    {
+      "id": "GM01_clarify_then_cbm",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        {
+          "role": "user",
+          "content": "Tính CBM kiện hàng xuất khẩu giúp mình"
+        },
+        {
+          "role": "user",
+          "content": "Kích thước là dài 80cm, rộng 50cm, cao 40cm"
+        },
+        {
+          "role": "user",
+          "content": "Số lượng là 4 kiện nhé"
+        }
+      ],
+      "failure_type": "missing_info",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "cbm_calculator",
+            "args": {
+              "length_cm": 80,
+              "width_cm": 50,
+              "height_cm": 40,
+              "quantity": 4
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "multiturn_clarify_cbm",
+        "difficulty": "hard",
+        "what_it_tests": "3 turns: ban đầu thiếu kích thước, sau đó bổ sung và chốt số lượng 4 kiện."
+      }
+    },
+    {
+      "id": "GM02_correct_dimensions",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        {
+          "role": "user",
+          "content": "Tính thể tích kiện hàng 50x30x20 cm"
+        },
+        {
+          "role": "user",
+          "content": "À nhầm, chiều cao là 40cm chứ không phải 20cm"
+        },
+        {
+          "role": "user",
+          "content": "Giữ nguyên dài 50 và rộng 30 nhé"
+        }
+      ],
+      "failure_type": "wrong_arg_value",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "cbm_calculator",
+            "args": {
+              "length_cm": 50,
+              "width_cm": 30,
+              "height_cm": 40
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "multiturn_correct_height",
+        "difficulty": "hard",
+        "what_it_tests": "3 turns: sửa đổi chiều cao từ 20 thành 40 cm và giữ nguyên dài rộng."
+      }
+    },
+    {
+      "id": "GM03_research_then_cbm",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        {
+          "role": "user",
+          "content": "Tin tức xuất khẩu mây tre đan hôm nay thế nào?"
+        },
+        {
+          "role": "user",
+          "content": "Bây giờ mình muốn đóng gói 1 kiện mẫu gửi sang Mỹ, kích thước 45x35x25 cm, nặng 3kg"
+        },
+        {
+          "role": "user",
+          "content": "Chỉ tính thể tích CBM và trọng lượng tính cước thôi"
+        }
+      ],
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "cbm_calculator",
+            "args": {
+              "length_cm": 45,
+              "width_cm": 35,
+              "height_cm": 25,
+              "weight_kg": 3
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "multiturn_context_switch_to_cbm",
+        "difficulty": "hard",
+        "what_it_tests": "3 turns: chuyển đổi ngữ cảnh từ tra cứu tin tức sang tính CBM kiện hàng."
+      }
+    },
+    {
+      "id": "GM04_confirm_send_shipping_quote",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        {
+          "role": "user",
+          "content": "Tính CBM kiện hàng 60x50x40 cm nặng 8kg"
+        },
+        {
+          "role": "user",
+          "content": "Gửi kết quả tính toán này lên Telegram channel giúp mình"
+        },
+        {
+          "role": "user",
+          "content": "Tôi xác nhận đồng ý gửi, hãy gửi ngay đi"
+        }
+      ],
+      "failure_type": "wrong_boundary",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "send",
+            "args": {
+              "confirmed": true
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "multiturn_confirm_send",
+        "difficulty": "hard",
+        "what_it_tests": "3 turns: sau khi được xác nhận rõ ràng đồng ý gửi ở lượt 3, gọi tool send với confirmed=true."
+      }
+    },
+    {
+      "id": "GM05_switch_from_cbm_to_web",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        {
+          "role": "user",
+          "content": "Tính CBM kiện hàng 70x40x30 cm"
+        },
+        {
+          "role": "user",
+          "content": "Thôi không tính nữa, tìm trên web quy định đóng gói đồ thủ công xuất khẩu đi Mỹ"
+        },
+        {
+          "role": "user",
+          "content": "Chỉ tìm trên web thôi nhé"
+        }
+      ],
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "lookup",
+            "args": {
+              "topic": "general"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "multiturn_switch_cbm_to_lookup",
+        "difficulty": "hard",
+        "what_it_tests": "3 turns: chuyển đổi hoàn toàn từ tính toán CBM sang tra cứu web lookup."
+      }
+    }
+  ]
 }

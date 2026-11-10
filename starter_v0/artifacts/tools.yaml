@@ -1,70 +1,56 @@
-# starter_v0 — tool declarations (intentionally vague).
-# Names and descriptions here are a rough first draft. Routing rules, name->handle
-# mapping, arg conventions (news/timeframe/Top), and the send-confirmation boundary
-# are NOT spelled out anywhere yet. Your job is to make these declarations + the
-# system prompt good enough that the agent routes correctly on the eval.
-#
-# If you rename a tool, keep the name in sync across:
-#   this file  ->  tools/__init__.py (TOOL_FUNCTIONS)  ->  data/eval_base.json + data/eval_research_extension.json
-# `pytest tests/test_tool_contract.py` checks this sync for you.
-#
-# TODO(student):
-#   - Rewrite every description: what it does, WHEN to use it, WHEN NOT to use it.
-#   - Spell out arg conventions in parameter descriptions (handle format, topic/timeframe, search_type).
-#   - Make the `send` confirmation boundary explicit.
-#   - Declare your new tool(s) at the end of this file.
+# starter_v0 — tool declarations (Fully optimized v3).
 tools:
   # ---------------- Core tools ----------------
   - name: clarify
-    description: "Gửi một câu hỏi cho người dùng."
+    description: "Gửi một câu hỏi làm rõ cho người dùng khi thiếu thông tin thiết yếu. DÙNG KHI: thiếu tên tài khoản Twitter/X (screenname), thiếu URL bài viết cần đọc, hoặc cần xin xác nhận từ người dùng trước khi gửi tin. KHÔNG DÙNG KHI: người dùng đã cung cấp đủ thông tin, hoặc yêu cầu nằm ngoài phạm vi hỗ trợ."
     parameters:
       type: object
       properties:
-        question: {type: string, default: "", description: "Câu hỏi"}
-        response_type: {type: string, enum: [text, yes_no, choice], default: "text", description: "Kiểu trả lời"}
-        options: {type: array, default: [], items: {type: string}, description: "Các lựa chọn"}
-      required: [question]
+        question: {type: string, default: "", description: "Câu hỏi làm rõ gửi tới người dùng"}
+        response_type: {type: string, enum: [text, yes_no, choice], default: "text", description: "Loại phản hồi: 'text' khi cần người dùng nhập thông tin (handle, URL); 'yes_no' khi cần xin xác nhận trước khi thực hiện hành động gửi; 'choice' khi đưa ra các lựa chọn"}
+        options: {type: array, default: [], items: {type: string}, description: "Các lựa chọn khi response_type là choice"}
+      required: [question, response_type]
 
   - name: timeline
-    description: "Lấy các bài đăng gần đây."
+    description: "Lấy các bài đăng gần đây của một tài khoản cụ thể. DÙNG KHI: người dùng yêu cầu xem bài đăng/tweet CỦA một cá nhân hoặc tổ chức cụ thể. KHÔNG DÙNG KHI: tìm kiếm tweet theo chủ đề chung chung (dùng social_search)."
     parameters:
       type: object
       properties:
-        screenname: {type: string, default: "", description: "Tên tài khoản"}
-        limit: {type: integer, default: 5, description: "Số lượng"}
+        screenname: {type: string, default: "", description: "Tên tài khoản Twitter/X cần lấy tweet, KHÔNG bao gồm ký tự @ ở đầu (ví dụ: 'sama', 'elonmusk', 'karpathy')"}
+        limit: {type: integer, default: 5, description: "Số lượng bài đăng tối đa cần lấy (mặc định 5)"}
       required: [screenname]
 
   - name: social_search
-    description: "Tìm trên mạng xã hội."
+    description: "Tìm kiếm các bài đăng trên mạng xã hội Twitter/X theo từ khóa hoặc chủ đề. DÙNG KHI: tìm kiếm thảo luận, dư luận về một chủ đề trên mạng xã hội. KHÔNG DÙNG KHI: lấy bài đăng của một tài khoản cụ thể (dùng timeline)."
     parameters:
       type: object
       properties:
-        query: {type: string, default: "", description: "Từ khóa"}
-        search_type: {type: string, enum: [Latest, Top], default: "Latest", description: "Cách sắp xếp"}
-        limit: {type: integer, default: 5, description: "Số lượng"}
+        query: {type: string, default: "", description: "Từ khóa hoặc chủ đề tìm kiếm trên mạng xã hội"}
+        search_type: {type: string, enum: [Latest, Top], default: "Latest", description: "Cách sắp xếp: 'Latest' cho bài đăng mới nhất, 'Top' cho bài đăng phổ biến/nhiều tương tác nhất"}
+        limit: {type: integer, default: 5, description: "Số lượng kết quả cần lấy (mặc định 5)"}
       required: [query]
 
   - name: lookup
-    description: "Tra cứu thông tin trên internet."
+    description: "Tra cứu thông tin, bài viết hoặc tin tức trên internet qua công cụ tìm kiếm web. DÙNG KHI: cần tìm kiếm thông tin tổng hợp, sự kiện, bài báo thời sự trên web. KHÔNG DÙNG KHI: đã có URL cụ thể của bài viết (dùng fetch)."
     parameters:
       type: object
       properties:
-        query: {type: string, default: "", description: "Truy vấn"}
-        topic: {type: string, enum: [general, news], default: "general", description: "Phân loại"}
-        timeframe: {type: string, enum: [day, week, month, year], default: "week", description: "Khoảng thời gian"}
-        max_results: {type: integer, default: 5, description: "Số kết quả"}
+        query: {type: string, default: "", description: "Từ khóa tìm kiếm ngắn gọn, súc tích (chỉ chứa thực thể/chủ đề cốt lõi, không chứa từ rườm rà)"}
+        topic: {type: string, enum: [general, news], default: "general", description: "Phân loại tìm kiếm: 'news' cho tin tức thời sự/báo chí mới; 'general' cho tìm kiếm thông tin thông thường"}
+        timeframe: {type: string, enum: [day, week, month, year], default: "week", description: "Khoảng thời gian giới hạn kết quả: 'day' (hôm nay), 'week' (tuần này), 'month' (tháng này), 'year' (năm nay)"}
+        max_results: {type: integer, default: 5, description: "Số lượng kết quả tối đa cần trả về"}
       required: [query]
 
   - name: fetch
-    description: "Lấy nội dung từ một địa chỉ."
+    description: "Đọc và trích xuất toàn bộ nội dung văn bản từ một địa chỉ URL web cụ thể. DÙNG KHI: người dùng cung cấp link URL cụ thể (http/https) và yêu cầu đọc, tóm tắt hoặc phân tích. KHÔNG DÙNG KHI: chưa có URL cụ thể (phải gọi clarify để hỏi)."
     parameters:
       type: object
       properties:
-        url: {type: string, default: "", description: "Địa chỉ"}
+        url: {type: string, default: "", description: "Đường dẫn URL đầy đủ (bao gồm https://) của bài viết/trang web cần đọc"}
       required: [url]
 
   - name: format
-    description: "Trình bày dữ liệu đã có thành văn bản."
+    description: "Trình bày, biên tập và cấu trúc lại danh sách các tin tức/mục dữ liệu thành văn bản markdown tổng hợp (digest). DÙNG KHI: đã có dữ liệu và cần xuất ra định dạng bản tin tóm tắt."
     parameters:
       type: object
       properties:
@@ -86,40 +72,53 @@ tools:
 
   # ---------------- Bonus tools ----------------
   - name: send
-    description: "Gửi một đoạn văn bản đi."
+    description: "Gửi một đoạn văn bản hoặc bản tin lên kênh Telegram. DÙNG KHI: người dùng yêu cầu gửi/đăng tin VÀ đã có xác nhận rõ ràng (confirmed=true). KHÔNG DÙNG KHI: chưa có xác nhận từ người dùng (bắt buộc gọi clarify xin xác nhận trước)."
     parameters:
       type: object
       properties:
-        text: {type: string, default: "", description: "Nội dung"}
-        confirmed: {type: boolean, default: false, description: "Cờ xác nhận"}
-      required: [text]
+        text: {type: string, default: "", description: "Nội dung văn bản cần gửi"}
+        confirmed: {type: boolean, default: false, description: "Cờ xác nhận bắt buộc. CHỈ đặt là true khi người dùng đã xác nhận đồng ý gửi"}
+      required: [text, confirmed]
 
   - name: policy
-    description: "Tìm trong tài liệu nội bộ."
+    description: "Tìm kiếm trong tài liệu quy định nội bộ công ty. DÙNG KHI: hỏi về chính sách nghiên cứu AI, bản quyền nguồn, bảo mật dữ liệu, quy định xuất bản."
     parameters:
       type: object
       properties:
-        query: {type: string, default: "", description: "Truy vấn"}
-        policy_area: {type: string, enum: [all, ai_research, source_citation, data_privacy, external_publishing, tool_usage], default: "all", description: "Nhóm"}
-        top_k: {type: integer, default: 3, description: "Số mục"}
+        query: {type: string, default: "", description: "Truy vấn tìm kiếm chính sách"}
+        policy_area: {type: string, enum: [all, ai_research, source_citation, data_privacy, external_publishing, tool_usage], default: "all", description: "Nhóm chính sách"}
+        top_k: {type: integer, default: 3, description: "Số mục kết quả"}
       required: [query]
 
   - name: papers
-    description: "Tìm bài báo khoa học."
+    description: "Tìm bài báo nghiên cứu khoa học trên kho lưu trữ arXiv theo từ khóa."
     parameters:
       type: object
       properties:
-        query: {type: string, default: "", description: "Từ khóa"}
+        query: {type: string, default: "", description: "Từ khóa tìm kiếm bài báo"}
         max_results: {type: integer, default: 5, description: "Số lượng"}
         sort_by: {type: string, enum: [relevance, lastUpdatedDate, submittedDate], default: "relevance", description: "Sắp xếp"}
       required: [query]
 
   - name: paper_text
-    description: "Lấy nội dung text của một bài báo."
+    description: "Lấy nội dung văn bản trích xuất từ file PDF của bài báo trên arXiv."
     parameters:
       type: object
       properties:
-        arxiv_url: {type: string, default: "", description: "ID hoặc địa chỉ"}
-        max_pages: {type: integer, default: 5, description: "Số trang"}
-        max_chars: {type: integer, default: 8000, description: "Số ký tự"}
+        arxiv_url: {type: string, default: "", description: "ID hoặc đường dẫn arXiv"}
+        max_pages: {type: integer, default: 5, description: "Số trang tối đa"}
+        max_chars: {type: integer, default: 8000, description: "Số ký tự tối đa"}
       required: [arxiv_url]
+
+  # ---------------- Custom tool nhóm ----------------
+  - name: cbm_calculator
+    description: "Tính toán thể tích đóng gói (CBM) và trọng lượng quy đổi thể tích (Volumetric Weight/Chargeable Weight) theo chuẩn vận tải quốc tế cho hàng thủ công mỹ nghệ xuất khẩu. DÙNG KHI: người dùng hỏi về thể tích kiện hàng, đóng thùng carton, trọng lượng tính cước hoặc quy đổi kích thước sang thể tích."
+    parameters:
+      type: object
+      properties:
+        length_cm: {type: number, description: "Chiều dài kiện hàng tính bằng cm"}
+        width_cm: {type: number, description: "Chiều rộng kiện hàng tính bằng cm"}
+        height_cm: {type: number, description: "Chiều cao kiện hàng tính bằng cm"}
+        weight_kg: {type: number, default: 0.0, description: "Trọng lượng thực tế mỗi kiện tính bằng kg"}
+        quantity: {type: integer, default: 1, description: "Số lượng kiện hàng"}
+      required: [length_cm, width_cm, height_cm]

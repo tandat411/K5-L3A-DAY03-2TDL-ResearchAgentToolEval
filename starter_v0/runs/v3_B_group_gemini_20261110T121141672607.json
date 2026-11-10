@@ -1,0 +1,713 @@
+{
+  "run_id": "v3_B_group_gemini_20261110T121141672607",
+  "version": "v3",
+  "artifact_version": "v3+p76508821c5b7+t4059326a8e10",
+  "prompt_hash": "76508821c5b7e0fa99be3c02cb9a8569a6b6e4e38d7e63336155b5396b419fb6",
+  "tools_hash": "4059326a8e1062d594154cd6c57b1d21de0160bfe6c188edfc4d6e5bdb4db05f",
+  "phase": "B",
+  "suite": "group",
+  "provider": "gemini",
+  "model": "gemini-2.5-flash-lite",
+  "system_prompt": "D:\\AI_THUC_CHIEN\\K5-L3A-DAY03-2TDL-ResearchAgentToolEval\\starter_v0\\artifacts\\system_prompt.md",
+  "tools": "D:\\AI_THUC_CHIEN\\K5-L3A-DAY03-2TDL-ResearchAgentToolEval\\starter_v0\\artifacts\\tools.yaml",
+  "eval_cases": "data\\eval_group.json",
+  "dataset_id": "day04_v2_research_group",
+  "dataset_role": "group",
+  "description": "Bộ eval 10 cases do nhóm 2TDL xây dựng (5 single-turn và 5 multi-turn) bao gồm kiểm tra routing tool mới cbm_calculator, kiểm tra boundary, trích xuất tham số và chuyển đổi ngữ cảnh.",
+  "generated_at": "2026-11-10T12:11:41",
+  "summary": {
+    "total_cases": 10,
+    "measured_cases": 10,
+    "provider_error_cases": 0,
+    "passed_cases": 9,
+    "case_accuracy": 0.9,
+    "tool_routing_accuracy": 0.9,
+    "argument_accuracy": 0.9,
+    "multiturn_accuracy": 1.0,
+    "failure_counts": {
+      "missing_info": 1
+    },
+    "observed_mismatch_counts": {
+      "missing_tool_call": 1
+    }
+  },
+  "results": [
+    {
+      "id": "G01_cbm_calculator_routing",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "routing_cbm_calculator",
+        "difficulty": "medium",
+        "what_it_tests": "Route chính xác tới custom tool cbm_calculator và trích đúng length, width, height, weight, quantity."
+      },
+      "input": "Tính giúp mình thể tích kiện hàng thủ công mỹ nghệ kích thước 50x40x30 cm, nặng 5kg, số lượng 2 thùng",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "cbm_calculator",
+            "args": {
+              "length_cm": 50,
+              "width_cm": 40,
+              "height_cm": 30,
+              "weight_kg": 5,
+              "quantity": 2
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "cbm_calculator",
+            "args": {
+              "quantity": 2,
+              "height_cm": 30,
+              "width_cm": 40,
+              "length_cm": 50,
+              "weight_kg": 5
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "cbm_calculator",
+          "args": {
+            "quantity": 2,
+            "height_cm": 30,
+            "width_cm": 40,
+            "length_cm": 50,
+            "weight_kg": 5
+          },
+          "result": {
+            "status": "success",
+            "cbm_per_item": 0.06,
+            "total_cbm": 0.12,
+            "actual_weight_kg": 10.0,
+            "volumetric_weight_kg": 24.0,
+            "chargeable_weight_kg": 24.0,
+            "quantity": 2,
+            "summary": "Tổng thể tích: 0.1200 CBM | Trọng lượng thực tế: 10.00 kg | Trọng lượng thể tích: 24.00 kg | Trọng lượng tính cước: 24.00 kg cho 2 kiện hàng (50.0x40.0x30.0 cm)."
+          }
+        }
+      ]
+    },
+    {
+      "id": "G02_cbm_calculator_default_args",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "cbm_calculator_defaults",
+        "difficulty": "easy",
+        "what_it_tests": "Gọi cbm_calculator khi không có weight và quantity (sử dụng giá trị mặc định)."
+      },
+      "input": "Tính CBM cho một kiện hàng kích thước dài 60cm, rộng 40cm, cao 25cm",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "cbm_calculator",
+            "args": {
+              "length_cm": 60,
+              "width_cm": 40,
+              "height_cm": 25
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "cbm_calculator",
+            "args": {
+              "quantity": 1,
+              "width_cm": 40,
+              "height_cm": 25,
+              "length_cm": 60
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_arg_value",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "cbm_calculator",
+          "args": {
+            "quantity": 1,
+            "width_cm": 40,
+            "height_cm": 25,
+            "length_cm": 60
+          },
+          "result": {
+            "status": "success",
+            "cbm_per_item": 0.06,
+            "total_cbm": 0.06,
+            "actual_weight_kg": 0.0,
+            "volumetric_weight_kg": 12.0,
+            "chargeable_weight_kg": 12.0,
+            "quantity": 1,
+            "summary": "Tổng thể tích: 0.0600 CBM | Trọng lượng thực tế: 0.00 kg | Trọng lượng thể tích: 12.00 kg | Trọng lượng tính cước: 12.00 kg cho 1 kiện hàng (60.0x40.0x25.0 cm)."
+          }
+        }
+      ]
+    },
+    {
+      "id": "G03_social_search_latest",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "social_search_latest",
+        "difficulty": "easy",
+        "what_it_tests": "'mới nhất' trên mạng xã hội -> search_type=Latest."
+      },
+      "input": "Tìm các bài đăng mới nhất trên Twitter về xuất khẩu gốm sứ Bát Tràng",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "social_search",
+            "args": {
+              "search_type": "Latest"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "social_search",
+            "args": {
+              "search_type": "Latest",
+              "query": "xuất khẩu gốm sứ Bát Tràng"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_arg_value",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "social_search",
+          "args": {
+            "search_type": "Latest",
+            "query": "xuất khẩu gốm sứ Bát Tràng"
+          },
+          "result": {
+            "tool": "search_tweets",
+            "error": "HTTPError",
+            "message": "403 Client Error: Forbidden for url: https://twitter-api45.p.rapidapi.com/search.php?query=xu%E1%BA%A5t+kh%E1%BA%A9u+g%E1%BB%91m+s%E1%BB%A9+B%C3%A1t+Tr%C3%A0ng&search_type=Latest"
+          }
+        }
+      ]
+    },
+    {
+      "id": "G04_out_of_scope_cooking",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "out_of_scope_cooking",
+        "difficulty": "easy",
+        "what_it_tests": "Câu hỏi nấu ăn ngoài phạm vi research -> không gọi tool."
+      },
+      "input": "Hướng dẫn mình cách nấu món phở bò truyền thống tại nhà",
+      "expect": {
+        "no_tool": true,
+        "behavior": "refuse"
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [],
+        "actual_text": "Chào bạn! Hướng dẫn nấu món phở bò truyền thống tại nhà là một yêu cầu nằm ngoài phạm vi hỗ trợ chuyên môn của tôi (tôi chuyên hỗ trợ tìm kiếm thông tin, nghiên cứu, tra cứu tài liệu và mạng xã hội). \n\nTuy nhiên, tôi có thể tóm tắt nhanh các bước cơ bản để bạn tham khảo:\n\n1. **Chuẩn bị nguyên liệu:** Xương ống bò (hầm lấy nước dùng), thịt bò tái/chín/gân, bánh phở, các loại gia vị (quế, hồi, thảo quả, gừng, hành khô, hành tây), rau thơm (hành lá, ngò rí).\n2. **Sơ chế & Nướng:** Rửa sạch xương, chần sơ qua nước sôi. Nướng chín thơm gừng, hành khô, hành tây và các gia vị khô (quế, hồi, thảo quả).\n3. **Ninh nước dùng:** Cho xương vào hầm kỹ (từ 4–6 tiếng), vớt bọt liên tục để nước dùng trong. Cho các gia vị đã nướng vào túi vải thả vào nồi nước dùng, nêm nếm gia vị vừa ăn.\n4. **Trình bày:** Chần bánh phở cho vào tô, xếp thịt bò tái/chín lên trên, chan nước dùng nóng hổi và rắc hành ngò.\n\nChúc bạn nấu thành công món phở bò thơm ngon cho gia đình! Nếu bạn cần tìm kiếm các bài viết hướng dẫn chi tiết hoặc công thức từ các đầu bếp nổi tiếng trên web, hãy cho tôi biết nhé.",
+        "case_failure_type": "out_of_scope",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": []
+    },
+    {
+      "id": "G05_clarify_missing_shipping_dimensions",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "clarify_missing_dimensions",
+        "difficulty": "medium",
+        "what_it_tests": "Yêu cầu tính CBM nhưng không cung cấp kích thước -> gọi clarify hỏi lại."
+      },
+      "input": "Tính cước thể tích CBM cho lô hàng thủ công của mình với",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "response_type": "text"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "routing_correct": false,
+        "args_correct": false,
+        "actual_tool_calls": [],
+        "actual_text": "Để tính cước thể tích CBM, bạn vui lòng cung cấp cho tôi các thông số sau của lô hàng:\n\n*   Chiều dài (cm)\n*   Chiều rộng (cm)\n*   Chiều cao (cm)\n*   Trọng lượng (kg)\n*   Số lượng kiện hàng",
+        "case_failure_type": "missing_info",
+        "observed_mismatch": "missing_tool_call",
+        "failure_type": "missing_info",
+        "failures": [
+          "missing tool call clarify"
+        ]
+      },
+      "tool_results": []
+    },
+    {
+      "id": "GM01_clarify_then_cbm",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_clarify_cbm",
+        "difficulty": "hard",
+        "what_it_tests": "3 turns: ban đầu thiếu kích thước, sau đó bổ sung và chốt số lượng 4 kiện."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Tính CBM kiện hàng xuất khẩu giúp mình"
+        },
+        {
+          "role": "user",
+          "content": "Kích thước là dài 80cm, rộng 50cm, cao 40cm"
+        },
+        {
+          "role": "user",
+          "content": "Số lượng là 4 kiện nhé"
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "cbm_calculator",
+            "args": {
+              "length_cm": 80,
+              "width_cm": 50,
+              "height_cm": 40,
+              "quantity": 4
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "cbm_calculator",
+            "args": {
+              "quantity": 4,
+              "height_cm": 40,
+              "width_cm": 50,
+              "weight_kg": 0,
+              "length_cm": 80
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "missing_info",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "cbm_calculator",
+          "args": {
+            "quantity": 4,
+            "height_cm": 40,
+            "width_cm": 50,
+            "weight_kg": 0,
+            "length_cm": 80
+          },
+          "result": {
+            "status": "success",
+            "cbm_per_item": 0.16,
+            "total_cbm": 0.64,
+            "actual_weight_kg": 0.0,
+            "volumetric_weight_kg": 128.0,
+            "chargeable_weight_kg": 128.0,
+            "quantity": 4,
+            "summary": "Tổng thể tích: 0.6400 CBM | Trọng lượng thực tế: 0.00 kg | Trọng lượng thể tích: 128.00 kg | Trọng lượng tính cước: 128.00 kg cho 4 kiện hàng (80.0x50.0x40.0 cm)."
+          }
+        }
+      ]
+    },
+    {
+      "id": "GM02_correct_dimensions",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_correct_height",
+        "difficulty": "hard",
+        "what_it_tests": "3 turns: sửa đổi chiều cao từ 20 thành 40 cm và giữ nguyên dài rộng."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Tính thể tích kiện hàng 50x30x20 cm"
+        },
+        {
+          "role": "user",
+          "content": "À nhầm, chiều cao là 40cm chứ không phải 20cm"
+        },
+        {
+          "role": "user",
+          "content": "Giữ nguyên dài 50 và rộng 30 nhé"
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "cbm_calculator",
+            "args": {
+              "length_cm": 50,
+              "width_cm": 30,
+              "height_cm": 40
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "cbm_calculator",
+            "args": {
+              "length_cm": 50,
+              "height_cm": 40,
+              "quantity": 1,
+              "width_cm": 30
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_arg_value",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "cbm_calculator",
+          "args": {
+            "length_cm": 50,
+            "height_cm": 40,
+            "quantity": 1,
+            "width_cm": 30
+          },
+          "result": {
+            "status": "success",
+            "cbm_per_item": 0.06,
+            "total_cbm": 0.06,
+            "actual_weight_kg": 0.0,
+            "volumetric_weight_kg": 12.0,
+            "chargeable_weight_kg": 12.0,
+            "quantity": 1,
+            "summary": "Tổng thể tích: 0.0600 CBM | Trọng lượng thực tế: 0.00 kg | Trọng lượng thể tích: 12.00 kg | Trọng lượng tính cước: 12.00 kg cho 1 kiện hàng (50.0x30.0x40.0 cm)."
+          }
+        }
+      ]
+    },
+    {
+      "id": "GM03_research_then_cbm",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_context_switch_to_cbm",
+        "difficulty": "hard",
+        "what_it_tests": "3 turns: chuyển đổi ngữ cảnh từ tra cứu tin tức sang tính CBM kiện hàng."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Tin tức xuất khẩu mây tre đan hôm nay thế nào?"
+        },
+        {
+          "role": "user",
+          "content": "Bây giờ mình muốn đóng gói 1 kiện mẫu gửi sang Mỹ, kích thước 45x35x25 cm, nặng 3kg"
+        },
+        {
+          "role": "user",
+          "content": "Chỉ tính thể tích CBM và trọng lượng tính cước thôi"
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "cbm_calculator",
+            "args": {
+              "length_cm": 45,
+              "width_cm": 35,
+              "height_cm": 25,
+              "weight_kg": 3
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "cbm_calculator",
+            "args": {
+              "width_cm": 35,
+              "length_cm": 45,
+              "quantity": 1,
+              "height_cm": 25,
+              "weight_kg": 3
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "cbm_calculator",
+          "args": {
+            "width_cm": 35,
+            "length_cm": 45,
+            "quantity": 1,
+            "height_cm": 25,
+            "weight_kg": 3
+          },
+          "result": {
+            "status": "success",
+            "cbm_per_item": 0.039375,
+            "total_cbm": 0.0394,
+            "actual_weight_kg": 3.0,
+            "volumetric_weight_kg": 7.88,
+            "chargeable_weight_kg": 7.88,
+            "quantity": 1,
+            "summary": "Tổng thể tích: 0.0394 CBM | Trọng lượng thực tế: 3.00 kg | Trọng lượng thể tích: 7.88 kg | Trọng lượng tính cước: 7.88 kg cho 1 kiện hàng (45.0x35.0x25.0 cm)."
+          }
+        }
+      ]
+    },
+    {
+      "id": "GM04_confirm_send_shipping_quote",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_confirm_send",
+        "difficulty": "hard",
+        "what_it_tests": "3 turns: sau khi được xác nhận rõ ràng đồng ý gửi ở lượt 3, gọi tool send với confirmed=true."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Tính CBM kiện hàng 60x50x40 cm nặng 8kg"
+        },
+        {
+          "role": "user",
+          "content": "Gửi kết quả tính toán này lên Telegram channel giúp mình"
+        },
+        {
+          "role": "user",
+          "content": "Tôi xác nhận đồng ý gửi, hãy gửi ngay đi"
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "send",
+            "args": {
+              "confirmed": true
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "send",
+            "args": {
+              "confirmed": true,
+              "text": "Kết quả tính toán CBM cho kiện hàng kích thước 60 x 50 x 40 cm, nặng 8 kg:\n- Thể tích (CBM): 0.12 m³\n- Trọng lượng quy đổi (Volumetric Weight): 20 kg (tính theo chuẩn vận tải quốc tế)"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_boundary",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "send",
+          "args": {
+            "confirmed": true,
+            "text": "Kết quả tính toán CBM cho kiện hàng kích thước 60 x 50 x 40 cm, nặng 8 kg:\n- Thể tích (CBM): 0.12 m³\n- Trọng lượng quy đổi (Volumetric Weight): 20 kg (tính theo chuẩn vận tải quốc tế)"
+          },
+          "result": {
+            "tool": "send_telegram",
+            "error": "RuntimeError",
+            "message": "Missing TELEGRAM_BOT_TOKEN / TELEGRAM_CHAT_ID env var"
+          }
+        }
+      ]
+    },
+    {
+      "id": "GM05_switch_from_cbm_to_web",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_switch_cbm_to_lookup",
+        "difficulty": "hard",
+        "what_it_tests": "3 turns: chuyển đổi hoàn toàn từ tính toán CBM sang tra cứu web lookup."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Tính CBM kiện hàng 70x40x30 cm"
+        },
+        {
+          "role": "user",
+          "content": "Thôi không tính nữa, tìm trên web quy định đóng gói đồ thủ công xuất khẩu đi Mỹ"
+        },
+        {
+          "role": "user",
+          "content": "Chỉ tìm trên web thôi nhé"
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "lookup",
+            "args": {
+              "topic": "general"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "lookup",
+            "args": {
+              "query": "quy định đóng gói đồ thủ công xuất khẩu đi Mỹ",
+              "topic": "general",
+              "timeframe": "week"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "lookup",
+          "args": {
+            "query": "quy định đóng gói đồ thủ công xuất khẩu đi Mỹ",
+            "topic": "general",
+            "timeframe": "week"
+          },
+          "result": {
+            "tool": "web_search",
+            "query": "quy định đóng gói đồ thủ công xuất khẩu đi Mỹ",
+            "topic": "general",
+            "timeframe": "week",
+            "items": [
+              {
+                "title": "Quy cách đóng gói nhôm đúng chuẩn khi vận chuyển đường dài",
+                "url": "https://nhomminhdung.vn/tin-tuc/quy-cach-dong-goi-nhom-dung-chuan-khi-van-chuyen-duong-dai",
+                "source": "nhomminhdung.vn",
+                "summary": "Title: Quy cách đóng gói nhôm đúng chuẩn khi vận chuyển đường dài\nCÔNG TY TNHH NHÔM MINH DŨNG. # Quy cách đóng gói nhôm đúng chuẩn khi vận chuyển đường dài. Tầm quan trọng của đóng gói nhôm cuộn**. Nhôm cuộn là sản phẩm có giá trị cao và bề mặt dễ trầy xước, đặc biệt với nhôm sơn, nhôm màu hoặc nhôm phủ PVDF. Khi vận chuyển đường dài, nhôm cuộn phải chịu tác động của:. * Độ ẩm, hơi muối và ăn mòn khi đi đường biển;. Vì vậy, việc đóng gói đúng kỹ thuật không chỉ là bảo vệ sản phẩm mà còn là yếu tố then chốt duy trì chất lượng bề mặt và tính cơ học của hợp kim nhôm trong suốt quá trình vận chuyển. Quy trình đóng gói nhôm cuộn tiêu chuẩn xuất khẩu**. ***Bước 1: Bọc lớp chống ẩm bên trong***. Sử dụng màng PE hoặc túi nilon hút ẩm bọc kín toàn bộ cuộn nhôm. Đặt túi hút ẩm (silica gel) bên trong lõi cuộn để hấp thụ hơi nước trong không khí. Lớp này có tác dụng ngăn hơi muối và chất oxy hóa khi đi tàu biển, đồng thời giúp ổn định nhiệt độ bề mặt của cuộn nhôm. Khung gỗ bảo vệ đầu cuộn (wooden collar) giúp hạn chế va đập trong quá trình nng hạ bằng xe nng hoặc cẩu container. Pallet gỗ xử lý nhiệt (HT) được sử dụng cho hàng xuất khẩu, đảm bảo đạt tiêu chuẩn ISPM 15. Quy cách đóng gói khi vận chuyển bằng đường bộ**. Với hành trình trên 10 ngày, nên kiểm tra lớp chống ẩm và túi hút ẩm trước khi đóng container để đảm bảo hiệu quả. * Quy trình chống ẩm ba lớp, khung gỗ bảo vệ đầu cuộn và pallet HT đạt chuẩn ISPM 15. Với nhiều năm kinh nghiệm trong phn phối và xuất khẩu nhôm cuộn công nghiệp, Minh Dũng không chỉ cung cấp sản phẩm đạt chất lượng cao, mà còn giải pháp đóng gói tối ưu giúp doanh nghiệp an tm trong mọi điều kiện vận chuyển - từ đường bộ nội địa đến đường biển quốc tế.",
+                "score": 0.11516222
+              },
+              {
+                "title": "Thích ứng quy định xuất khẩu xanh sang EU",
+                "url": "https://baodautu.vn/thich-ung-quy-dinh-xuat-khau-xanh-sang-eu-d222846.html",
+                "source": "baodautu.vn",
+                "summary": "Khuyến nghị doanh nghiệp rà soát, chuẩn hóa hồ sơ xuất khẩu tôm sang Mỹ  Khuyến nghị doanh nghiệp rà soát, chuẩn hóa hồ sơ xuất khẩu tôm sang Mỹ [...] Khuyến nghị doanh nghiệp rà soát, chuẩn hóa hồ sơ xuất khẩu tôm sang Mỹ  Khuyến nghị doanh nghiệp rà soát, chuẩn hóa hồ sơ xuất khẩu tôm sang Mỹ\n Xuất khẩu 2027: Cơ hội từ làn sóng tái cấu trúc chuỗi cung ứng\n Đưa chính sách hải quan đến gần doanh nghiệp bằng đối thoại và giải đáp thực tiễn [...] Trong xu thế các quốc gia nhập khẩu lớn như Mỹ, EU yêu cầu về sản phẩm xanh, sản phẩm dán nhãn carbon, các doanh nghiệp được lưu ý nên thuê chuyên gia tư vấn để thực hiện từng bước phần việc nhằm đáp ứng các quy định của EUDR. Với mỗi ngành hàng, doanh nghiệp có đặc thù khác nhau, nên các bước thực hiện cũng không giống nhau.",
+                "score": 0.060197048
+              },
+              {
+                "title": "Mỹ gia hạn tạm hoãn hạn chế xuất khẩu công nghệ sang Trung Quốc",
+                "url": "https://congluan.vn/my-gia-han-tam-hoan-han-che-xuat-khau-cong-nghe-voi-doanh-nghiep-trung-quoc-post366585.html",
+                "source": "congluan.vn",
+                "summary": "Ông Kevin Wolf, luật sư chuyên về thương mại quốc tế tại hãng Akin Gump, cho rằng việc tun thủ quy định sẽ tạo ra gánh nặng đáng kể cho doanh nghiệp do phạm vi áp dụng quá rộng và phức tạp.\n\nViệc tiếp tục tạm hoãn quy định được xem là một phần trong nỗ lực duy trì thỏa thuận đình chiến thương mại giữa Washington và Bắc Kinh. Trước đó, Trung Quốc cũng đã tạm dừng một số biện pháp kiểm soát xuất khẩu đất hiếm, mặt hàng quan trọng đối với nhiều ngành công nghiệp toàn cầu. [...] Quy định được Mỹ đưa ra từ tháng 9 năm ngoái nhằm mở rộng các hạn chế thương mại đối với công ty con của những doanh nghiệp nằm trong danh sách đen của Bộ Thương mại hoặc danh sách trừng phạt của Bộ Tài chính Mỹ. Washington cho rằng một số doanh nghiệp đang lợi dụng việc thành lập công ty con để né tránh các lệnh kiểm soát xuất khẩu.\n\n a006e6a2-f195-4617-81ce-f0e1f758c70f-7c320655.jpg [...] Tuy nhiên, những lo ngại về khả năng doanh nghiệp Trung Quốc tìm cách tiếp cận chip bán dẫn tiên tiến của Mỹ vẫn tồn tại. Đy là linh kiện thiết yếu đối với hoạt động phát triển trí tuệ nhn tạo (AI). Hồi tháng 6, Bộ Thương mại Mỹ đã làm rõ quy định yêu cầu giấy phép xuất khẩu chip sang các công ty Trung Quốc hoạt động ngoài lãnh thổ nước này.",
+                "score": 0.039564554
+              },
+              {
+                "title": "Trung Quốc sửa quy định đăng ký doanh nghiệp xuất khẩu thực phẩm",
+                "url": "https://thongtincongthuong.vn/trung-quoc-sua-quy-dinh-dang-ky-doanh-nghiep-xuat-khau-thuc-pham",
+                "source": "thongtincongthuong.vn",
+                "summary": "Title: Trung Quốc sửa quy định đăng ký doanh nghiệp xuất khẩu thực phẩm\n# Trung Quốc sửa quy định đăng ký doanh nghiệp xuất khẩu thực phẩm. **Quy định mới của Hải quan Trung Quốc đơn giản hóa hồ sơ đăng ký, rút ngắn thời gian giải quyết còn 3 ngày làm việc, yêu cầu doanh nghiệp cập nhật thông tin trong 60 ngày.**. Tổng cục Hải quan Trung Quốc (GACC) vừa ban hành Thông báo số 150 năm 2026 sửa đổi Quy định về quản lý đăng ký đối với doanh nghiệp xuất khẩu, nhập khẩu thực phẩm. *Tổng cục Hải quan Trung Quốc ban hành Thông báo số 150 về quản lý đăng ký đối với nhà xuất khẩu, nhập khẩu thực phẩm.*. Thông tin từ Văn phòng Thông báo và Điểm hỏi đáp quốc gia về vệ sinh dịch tễ và kiểm dịch động thực vật Việt Nam (Văn phòng SPS Việt Nam) cho biết, cơ quan này đã nhận được Công điện số TCO CĐ 253.2026 ngày 27/10/2026 của Đại sứ quán Việt Nam tại Trung Quốc về quy định mới. Đy là quy định liên quan trực tiếp đến hoạt động xuất khẩu thực phẩm của doanh nghiệp Việt Nam sang Trung Quốc. Doanh nghiệp xuất khẩu hoặc đại lý nước ngoài có thể thực hiện thủ tục đăng ký, thay đổi thông tin hoặc hủy đăng ký thông qua Cổng thông tin một cửa thương mại quốc tế hoặc Cổng dịch vụ công của Hải quan Trung Quốc. Theo Điều 7 của quy định mới, khi thông tin đăng ký có thay đổi, nhà xuất khẩu hoặc đại lý nước ngoài phải thực hiện thủ tục điều chỉnh với cơ quan hải quan có thẩm quyền trong vòng 60 ngày kể từ ngày phát sinh thay đổi. Trước những thay đổi này, Văn phòng SPS Việt Nam đề nghị các cơ quan, đơn vị, hiệp hội ngành hàng nghiên cứu và phổ biến kịp thời nội dung Thông báo số 150 năm 2026 đến doanh nghiệp liên quan, bảo đảm hoạt động đăng ký và xuất khẩu thực phẩm sang Trung Quốc tun thủ quy định của thị trường nhập khẩu.",
+                "score": 0.01384861
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

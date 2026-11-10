@@ -73,7 +73,7 @@ class GeminiProvider:
         self,
         *,
         api_key_env: str = "GEMINI_API_KEY",
-        default_model: str = "gemini-3.5-flash",
+        default_model: str = "gemini-3.5-flash-lite",
     ) -> None:
         self.api_key_env = api_key_env
         self.default_model = default_model
@@ -105,12 +105,36 @@ class GeminiProvider:
         if declarations:
             config_kwargs["tools"] = [types.Tool(function_declarations=declarations)]
 
-        client = genai.Client(api_key=api_key)
-        resp = client.models.generate_content(
-            model=model or self.default_model,
-            contents=contents,
-            config=types.GenerateContentConfig(**config_kwargs),
-        )
+        import time
+        client = genai.Client(api_key=api_key, http_options=types.HttpOptions(api_version="v1beta"))
+        resp = None
+        max_retries = 3
+        raw_candidates = [model or self.default_model, "gemini-3.5-flash-lite", "gemini-3.8-flash"]
+        candidate_models = list(dict.fromkeys(raw_candidates))
+        last_error = None
+        for curr_model in candidate_models:
+            for attempt in range(max_retries):
+                try:
+                    resp = client.models.generate_content(
+                        model=curr_model,
+                        contents=contents,
+                        config=types.GenerateContentConfig(**config_kwargs),
+                    )
+                    break
+                except Exception as exc:
+                    last_error = exc
+                    err_text = str(exc)
+                    if any(k in err_text for k in ('404', 'NOT_FOUND', 'no longer available', 'GenerateRequestsPerDay')):
+                        break
+                    if any(k in err_text for k in ('429', '503', 'RESOURCE_EXHAUSTED', 'UNAVAILABLE')) and attempt < max_retries - 1:
+                        time.sleep(5 * (attempt + 1))
+                    else:
+                        break
+            if resp is not None:
+                break
+
+        if resp is None and last_error is not None:
+            raise last_error
 
         text_parts: list[str] = []
         calls: list[ToolCall] = []
