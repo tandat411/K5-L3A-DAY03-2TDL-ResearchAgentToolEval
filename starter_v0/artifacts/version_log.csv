@@ -1,2 +1,4 @@
 version,author,changed_artifact,artifact_version,prompt_hash,tools_hash,reason,hypothesis,metric_before,metric_after,run_file
 v0,team,baseline,v0+peb1c8179815b+t5b22a2476d41,eb1c8179815b,5b22a2476d41,baseline,Đo hành vi v0 với starter prompt và default tools,,0.70,runs/v0_B_base_openrouter_20261110T100517664145.json
+v1,team,system_prompt.md,v1+pcba90843f75c+t5b22a2476d41,cba90843f75c,5b22a2476d41,Thêm quy tắc scope clarify và confirm,Loại bỏ chỉ dẫn đoán mò và ép 1 tool giúp giảm out_of_scope và vi phạm boundary,0.70,0.80,runs/v1_B_base_openrouter_20261110T110302545586.json
+v2,team,tools.yaml & system_prompt.md,v2+pe4cf2bc4d903+t7c43fae968c6,e4cf2bc4d903,7c43fae968c6,Viết lại tools.yaml chi tiết và thêm quy tắc chuyển tool khi đổi ý,Mô tả rõ khi nào dùng/không dùng và quy tắc bỏ tool cũ khi được yêu cầu giúp đạt độ chính xác tuyệt đối,0.80,1.00,runs/v2_B_base_openrouter_20261110T114353890020.json
